@@ -1,0 +1,45 @@
+canvas {
+    border: 1px solid black;
+}
+
+
+#start-game {
+    color: white;
+    font-size: 2em;
+    padding: 0.5em 1em;
+    width: fit-content;
+    margin-top: 1em
+}
+
+.game-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
+}
+
+body {
+    background-image: url("../img/background-stars-2.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%
+}
+
+#timer {
+    font-size: 2em;
+
+
+}
+
+.timer-text {
+    color: white;
+    align-self: right;
+}
+
+.btn.start {
+    background-color: red;
+}
+
+.btn.stop {
+    background-color: yellow
+}
