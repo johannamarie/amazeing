@@ -24,6 +24,8 @@ function startGame() {
     // start TIMER
 }
 
+
+
 const btnStart = document.getElementById("start-game");
 const timer = document.getElementById("timer")
 
@@ -35,8 +37,8 @@ btnStart.addEventListener('click', () => {
         btnStart.classList.remove('stop');
         btnStart.classList.add("start");
         btnStart.textContent = "START";
+        console.log("btnStart " + btnStart.classList);
 
-        clearTimer();
     }
     
     // GAME ONGOING
@@ -45,15 +47,13 @@ btnStart.addEventListener('click', () => {
         btnStart.classList.remove("start");
         btnStart.classList.add("stop");
         btnStart.textContent = "STOP"
-        console.log("btnStart " + btnStart.classList);
 
         const player = new Player (150, 550, 50, 50, "orange");
-        startTimer();
         player.draw();
         console.log("btnStart " + btnStart.classList);
+
+        startTimer();
     }
-
-
 })
 
 const walls1 = [
@@ -120,25 +120,33 @@ document.onkeydown = function(e) {
       player.x -= 10;
       console.log("left ", player)
     }
-  };
+};
 
 
 
-  // TIMER
+// TIMER
+
 
 
 function startTimer() {
-    let counter = 60;
-    const intervalId = setInterval(function () {
-    counter -= 1;
-    timer.textContent = counter;
+    const intervalId = setInterval(startTimer, () => {
+        let counter = 60;
+        counter -= 1;
+        timer.textContent = counter;
+        console.log(timer);
+    }, 1000)
 
-    if (counter === 0) {
-        clearInterval(intervalId);
-        return;
-    }
-}, 1000);
+    // if (counter === 0) {
+    //     clearInterval(intervalId);
+    //     clearTimer();
+    // }
+    // if (btnStart.classList.contains("stop")) {
+    //     clearInterval(intervalId);
+    //     counter = 60
+    //     timer.textContent = counter
+    // }
 }
+
 
  
 

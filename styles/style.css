@@ -19,10 +19,10 @@ canvas {
 }
 
 body {
-    background-image: url("../img/background-stars-2.jpg");
+    /* background-image: url("../img/background-stars-2.jpg");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 100%
+    background-size: 100% */
 }
 
 #timer {
@@ -32,7 +32,7 @@ body {
 }
 
 .timer-text {
-    color: white;
+    color: black;
     align-self: right;
 }
 
@@ -41,5 +41,25 @@ body {
 }
 
 .btn.stop {
-    background-color: yellow
+    background-color: navy
+}
+
+
+#container {
+    outline: 1px solid black;
+    position: relative;
+    background-image : url("../img/maze_20by10.svg");
+    background-size: 101%;
+    background-position: center;
+}
+
+.character {
+    position: absolute;
+    background-color: red;
+}
+
+
+.wall {
+    background-color: blue;
+    position: absolute;
 }
