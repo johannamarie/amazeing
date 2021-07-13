@@ -1,40 +1,80 @@
-const character = document.querySelector(".character");
-const maze = document.getElementById("container")
+const characterDisplay = document.querySelector(".character");
+const mazeArea = document.getElementById("container")
 const btnStart = document.getElementById("start-game");
-const timer = document.getElementById("timer");
-
-let mazeWidth
-let mazeHeight 
-let charWidth 
-let charHeight 
-let charLeft = 0;
-let charTop = 0;
+const timerDisplay = document.getElementById("timer");
+const wallDisplay = document.querySelectorAll(".wall");
 
 
-// const characterWidth = document.getElementById("character").style.width.replace('px', '') // STRING with "px"
-// const characterHeight = document.getElementById("character").style.height.replace('px', '') // STRING with "px"
-// const mazeWidth = document.getElementById("container").style.width.replace('px', '') // STRING with "px"
-// const mazeHeight = document.getElementById("container").style.height.replace('px', '') // STRING with "px"
 
-function createMaze(inputWidth, inputHeight) {
-    mazeWidth = inputWidth
-    mazeHeight = inputHeight
-    document.getElementById("container").style.width = mazeWidth + "px";
-    document.getElementById("container").style.height = mazeHeight + "px";
-    buildWalls(wallsMaze1)
-    return mazeWidth, mazeHeight
+class Character {
+    constructor(x, y, w, h) {
+        this.x = x;
+        this.y = y; 
+        this.w = w;
+        this.h = h
+    }
+
+    createCharacter() {
+    characterDisplay.style.width = this.w + "%";
+    characterDisplay.style.height = this.h + "%";
+    characterDisplay.style.top = this.y + "%";
+    characterDisplay.style.left = this.x + "%";
+    }
 }
 
-function createCharacter(inputLeft, inputTop, inputSize) {
-    charWidth = inputSize
-    charHeight = inputSize;
-    charTop = inputTop;
-    charLeft = inputLeft
-    document.querySelector(".character").style.width = charWidth + "%";
-    document.querySelector(".character").style.height = charWidth*2 + "%";
-    document.querySelector(".character").style.top = charTop + "%";
-    document.querySelector(".character").style.left = charLeft + "%";
+
+
+class Maze {
+    constructor(w, h) {
+        this.w = w;
+        this.h = h
+    }
+
+    createMaze() {
+        mazeArea.style.width = this.w + "px";
+        mazeArea.style.height = this.h + "px";
+        buildWalls(walls)
+    }
 }
+
+
+class Timer {
+    constructor(counter, interval) { 
+        this.counter = counter;
+        this.interval = interval
+    }
+
+    displayTimer() {
+        counter1 -= 1;
+        timerDisplay.textContent = counter1;
+        console.log(counter1)
+    }
+
+    startTimer() {
+        let counter1 = this.counter;
+        let intervalId = setInterval(function () {
+            
+    
+        if (counter1 === 0) {
+            clearInterval(intervalId);
+            clearTimer();
+        }
+        }, this.interval)
+    }
+    
+    clearTimer() {
+        clearInterval(intervalId);
+        counter1 = this.counter
+        timerDisplay.textContent = counter
+    }
+}
+
+const character = new Character(46, 0, 2, 4)
+const maze = new Maze(1000, 500)
+const timer = new Timer(60, 1000)
+
+
+
 
 // CREATE WALLS
 
@@ -43,97 +83,13 @@ function buildWalls(arrayWalls) {
     arrayWalls.forEach(wall => {
         const newWall = document.createElement("div");
         newWall.className= 'wall';
-        maze.appendChild(newWall);
+        mazeArea.appendChild(newWall);
         newWall.style.top = `${wall.y}%`;
         newWall.style.left = `${wall.x}%`;
         newWall.style.width = `${wall.w}%`;
         newWall.style.height = `${wall.h}%`;
     })
 }
-
-// const wallSize = 1
-
-// function createWallsH(left, top, length) {
-//     const wall = document.createElement("div");
-//     wall.className= 'wall';
-//     maze.appendChild(wall);
-//     wall.style.top = `${top}%`;
-//     wall.style.left = `${left}%`;
-//     wall.style.width = `${length}%`;
-//     wall.style.height = `${wallSize}%`;
-// }
-
-// function createWallsV(left, top, length) {
-//     const wall = document.createElement("div");
-//     wall.className= 'wall';
-//     maze.appendChild(wall);
-//     wall.style.top = `${top}%`;
-//     wall.style.left = `${left}%`;
-//     wall.style.width = `${wallSize/2}%`;
-//     wall.style.height = `${length}%`
-// }
-
-
-createMaze(1000, 500)
-
-const walls = document.querySelectorAll(".wall");
-
-// START POSITION
-
-
-
-function move(e) {
-    if (e.key === "ArrowRight") {
-        charLeft += 1.5;
-        character.style.left = charLeft + "%";
-        if(charLeft >= mazeWidth - charWidth) {
-            charLeft = mazeWidth - charWidth; // container WIDTH - char WIDTH
-            character.style.left = charLeft + "%";
-        }
-        // console.log(isColliding(walls))
-    }
-    if (e.key === "ArrowLeft") {
-        charLeft -= 1.5;
-        character.style.left = charLeft + "%";
-        if(charLeft <= 0) {
-            charLeft = 0; 
-            character.style.left = charLeft + "%";
-        }
-        // console.log(isColliding())
-    }
-    if (e.key === "ArrowDown") {
-        charTop += 1.5;
-        character.style.top = charTop + "%";
-        if(charTop >= mazeHeight - charHeight) {
-            charTop = mazeHeight - charHeight;
-            character.style.top = charTop + "%"
-        }
-        // console.log(isColliding())
-    }
-    if (e.key === "ArrowUp") {
-        charTop -= 1.5;
-        character.style.top = charTop + "%";
-        if(charTop <= 0) {
-            charTop = 0;
-            character.style.top = charTop + "%";
-        }
-        // console.log(isColliding())
-    }
-}
-
-document.onkeydown = move
-
-
-
-// document.onkeydown = move 
-//  {
-    
-//     if (e.key === "ArrowLeft") {
-//     //   player.x -= 10;
-//       console.log("left ", player)
-//     }
-// };
-
 
 
 btnStart.addEventListener('click', () => {
@@ -144,7 +100,7 @@ btnStart.addEventListener('click', () => {
         btnStart.classList.add("start");
         btnStart.textContent = "START";
         
-        clearTimer()
+        timer.clearTimer()
     }
     
     // GAME ONGOING
@@ -153,45 +109,115 @@ btnStart.addEventListener('click', () => {
         btnStart.classList.remove("start");
         btnStart.classList.add("stop");
         btnStart.textContent = "STOP"
-        createCharacter(46, 0, 2)
+        character.createCharacter()
+        maze.createMaze()
 
         // const player = new Player (150, 550, 50, 50, "orange");
         // player.draw();
 
-        startTimer();
+        timer.startTimer();
     }
 })
 
-// class Element {
-//     constructor(x, y, w, h) {
-//         this.x = x;
-//         this.y = y;
-//         this.w = w;
-//         this.h = h;
+
+
+document.onkeydown = function move(e) {
+    if (e.key === "ArrowRight") {
+        character.x += 1.5;
+        characterDisplay.style.left = character.x + "%";
+        if(character.x >= 100 - character.w) {
+            character.x = 100 - character.w; // container WIDTH - char WIDTH
+            characterDisplay.style.left = character.x + "%";
+        }
+
+    }
+    if (e.key === "ArrowLeft") {
+        character.x -= 1.5;
+        characterDisplay.style.left = character.x + "%";
+        if(character.x <= 0) {
+            character.x = 0; 
+            characterDisplay.style.left = character.x + "%";
+        }
+
+    }
+    if (e.key === "ArrowDown") {
+        character.y += 1.5;
+        characterDisplay.style.top = character.y + "%";
+        if(character.y >= 100 - character.h) {
+            character.y = 100 - character.h;
+            characterDisplay.style.top = character.y + "%"
+        }
+    }
+    
+    if (e.key === "ArrowUp") {
+        character.y -= 1.5;
+        characterDisplay.style.top = character.y + "%";
+        if(character.y <= 0) {
+            character.y = 0;
+            characterDisplay.style.top = character.y + "%";
+        }
+
+    }
+}
+
+
+
+
+
+
+// START POSITION
+
+
+
+// function move(e) {
+//     if (e.key === "ArrowRight") {
+//         character.x += 1.5;
+//         character.style.left = character.x + "%";
+//         if(character.x >= maze - charWidth) {
+//             charLeft = mazeWidth - charWidth; // container WIDTH - char WIDTH
+//             character.style.left = charLeft + "%";
+//         }
+//         // console.log(isColliding(walls))
+//     }
+//     if (e.key === "ArrowLeft") {
+//         charLeft -= 1.5;
+//         character.style.left = charLeft + "%";
+//         if(charLeft <= 0) {
+//             charLeft = 0; 
+//             character.style.left = charLeft + "%";
+//         }
+//         // console.log(isColliding())
+//     }
+//     if (e.key === "ArrowDown") {
+//         charTop += 1.5;
+//         character.style.top = charTop + "%";
+//         if(charTop >= mazeHeight - charHeight) {
+//             charTop = mazeHeight - charHeight;
+//             character.style.top = charTop + "%"
+//         }
+//         // console.log(isColliding())
+//     }
+//     if (e.key === "ArrowUp") {
+//         charTop -= 1.5;
+//         character.style.top = charTop + "%";
+//         if(charTop <= 0) {
+//             charTop = 0;
+//             character.style.top = charTop + "%";
+//         }
+//         // console.log(isColliding())
 //     }
 // }
 
+// MAZE
 
-// class Wall extends Element {
+// const maze1 = {w: 1000, h: 500}
+// function createMaze(maze) {
+//     mazeArea.style.width = maze.w + "px";
+//     mazeArea.style.height = maze.h + "px";
+//     buildWalls(wallsMaze1)
 // }
 
-
-// class Player extends Element {
-//     constructor(x, y, w, h, bgc) {
-//         super(x, y, w, h);
-//         this.bgc = bgc;
-//     }
-
-//     draw() {
-//         const ctx = document.getElementById("canvas").getContext('2d')
-//         ctx.fillStyle = this.bgc;
-//         ctx.fillRect(this.x, this.y, this.w, this.h);
-//     }
-
-//     moveLeft() {
-//         this.x += 50
-//     }
-// }
+// createMaze(maze1)
 
 
 
@@ -201,48 +227,50 @@ btnStart.addEventListener('click', () => {
 // TIMER
 
 
-function startTimer() {
-    let counter = 60;
-    intervalId = setInterval(function () {
-        counter -= 1;
-        timer.textContent = counter;
-
-    if (counter === 0) {
-        clearInterval(intervalId);
-        clearTimer();
-    }
-    }, 1000)
-}
-
-function clearTimer()
-{
-        clearInterval(intervalId);
-        counter = 60
-        timer.textContent = counter
-}
 
 
-// function isColliding (walls) {
+// console.log(walls)
 
-//     walls.forEach(wall => {
+// function isColliding (wall) {
 
-//     const wallTop = Number(wall.style.top.replace("px", ""));
-//     const wallHeight = Number(wall.style.height.replace("px", ""));
-//     const wallLeft = Number(wall.style.left.replace("px", ""));
-//     const wallWidth = Number(wall.style.width.replace("px", ""));
+//     //top-left-corner of character
+//     if(charLeft > wall.x && charLeft < wall.x + wall.w) {
+//         if(charTop > wall.y && charLeft < wall.y + wall.h) {
+//             console.log("collision")
+//         }
+//     } else return false
+  
 
-
-//     if(((charTop + charHeight) < (wallTop)) && // the bottom of the character is 
-//         (charTop > (wallTop + wallHeight)) &&
-//         ((charLeft + charWidth) < wallLeft) &&
-//         (charLeft > (wallLeft + wallWidth)))
-//         console.log(true)
-//     else console.log(false)
-//     })
+//     // if(((charTop + charHeight) < (wallTop)) && // the bottom of the character is 
+//     //     (charTop > (wallTop + wallHeight)) &&
+//     //     ((charLeft + charWidth) < wallLeft) &&
+//     //     (charLeft > (wallLeft + wallWidth)))
+//     //     console.log(true)
+//     // else console.log(false)
 // }
 
+// isColliding(wallsMaze1[0])
 
 
 
 
+// function startTimer() {
+//     let counter = 60;
+//     intervalId = setInterval(function () {
+//         counter -= 1;
+//         timer.textContent = counter;
+
+//     if (counter === 0) {
+//         clearInterval(intervalId);
+//         clearTimer();
+//     }
+//     }, 1000)
+// }
+
+// function clearTimer()
+// {
+//         clearInterval(intervalId);
+//         counter = 60
+//         timer.textContent = counter
+// }
 

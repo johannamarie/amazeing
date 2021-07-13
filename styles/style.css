@@ -47,9 +47,9 @@ body {
 
 #container {
     position: relative;
-    /* background-image : url("../img/maze_20by10.svg");
     background-size: 101%;
-    background-position: center; */
+    background-position: center;
+    border: 1px solid black
 }
 
 .character {
@@ -62,3 +62,4 @@ body {
     background-color: black;
     position: absolute;
 }
+
