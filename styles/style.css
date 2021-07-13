@@ -46,11 +46,10 @@ body {
 
 
 #container {
-    outline: 1px solid black;
     position: relative;
-    background-image : url("../img/maze_20by10.svg");
+    /* background-image : url("../img/maze_20by10.svg");
     background-size: 101%;
-    background-position: center;
+    background-position: center; */
 }
 
 .character {
@@ -60,6 +59,6 @@ body {
 
 
 .wall {
-    background-color: blue;
+    background-color: black;
     position: absolute;
 }

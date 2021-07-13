@@ -21,7 +21,7 @@ function createMaze(inputWidth, inputHeight) {
     mazeHeight = inputHeight
     document.getElementById("container").style.width = mazeWidth + "px";
     document.getElementById("container").style.height = mazeHeight + "px";
-    buildWalls()
+    buildWalls(wallsMaze1)
     return mazeWidth, mazeHeight
 }
 
@@ -38,138 +38,41 @@ function createCharacter(inputLeft, inputTop, inputSize) {
 
 // CREATE WALLS
 
-const wallSize = 1
+function buildWalls(arrayWalls) {
 
-function createWallsH(left, top, length) {
-    const wall = document.createElement("div");
-    wall.className= 'wall';
-    maze.appendChild(wall);
-    wall.style.top = `${top}%`;
-    wall.style.left = `${left}%`;
-    wall.style.width = `${length}%`;
-    wall.style.height = `${wallSize}%`;
+    arrayWalls.forEach(wall => {
+        const newWall = document.createElement("div");
+        newWall.className= 'wall';
+        maze.appendChild(newWall);
+        newWall.style.top = `${wall.y}%`;
+        newWall.style.left = `${wall.x}%`;
+        newWall.style.width = `${wall.w}%`;
+        newWall.style.height = `${wall.h}%`;
+    })
 }
 
-function createWallsV(left, top, length) {
-    const wall = document.createElement("div");
-    wall.className= 'wall';
-    maze.appendChild(wall);
-    wall.style.top = `${top}%`;
-    wall.style.left = `${left}%`;
-    wall.style.width = `${wallSize/2}%`;
-    wall.style.height = `${length}%`
-}
+// const wallSize = 1
 
+// function createWallsH(left, top, length) {
+//     const wall = document.createElement("div");
+//     wall.className= 'wall';
+//     maze.appendChild(wall);
+//     wall.style.top = `${top}%`;
+//     wall.style.left = `${left}%`;
+//     wall.style.width = `${length}%`;
+//     wall.style.height = `${wallSize}%`;
+// }
 
-function buildWalls() {
-createWallsH(0, 0, 45);
-createWallsH(50, 0, 50);
-createWallsH(20, 10, 10);
-createWallsH(45, 10, 5);
-createWallsH(70, 10, 10);
-createWallsH(85, 10, 10);
-createWallsH(0, 20, 10);
-createWallsH(20, 20, 5);
-createWallsH(50, 20, 15);
-createWallsH(80, 20, 20);
-createWallsH(25, 30, 5);
-createWallsH(35, 30, 5);
-createWallsH(45, 30, 10);
-createWallsH(60, 30, 10);
-createWallsH(75, 30, 5);
-createWallsH(90, 30, 5);
-createWallsH(5, 40, 20);
-createWallsH(30, 40, 5);
-createWallsH(40, 40, 10);
-createWallsH(65, 40, 10);
-createWallsH(90, 40, 10);
-createWallsH(90, 40, 10);
-createWallsH(5, 50, 10)
-createWallsH(25, 50, 5)
-createWallsH(35, 50, 5)
-createWallsH(45, 50, 20)
-createWallsH(75, 50, 5)
-createWallsH(85, 50, 10)
-createWallsH(10, 60, 15)
-createWallsH(30, 60, 25)
-createWallsH(65, 60, 5)
-createWallsH(80, 60, 15)
-createWallsH(5, 70, 5)
-createWallsH(15, 70, 5)
-createWallsH(30, 70, 10)
-createWallsH(50, 70, 10)
-createWallsH(70, 70, 15)
-createWallsH(5, 80, 5)
-createWallsH(20, 80, 5)
-createWallsH(40, 80, 20)
-createWallsH(65, 80, 15)
-createWallsH(10, 90, 25)
-createWallsH(10, 90, 25)
-createWallsH(45, 90, 10)
-createWallsH(60, 90, 15)
-createWallsH(80, 90, 5)
-createWallsH(0, 100, 50)
-createWallsH(55, 100, 45)
+// function createWallsV(left, top, length) {
+//     const wall = document.createElement("div");
+//     wall.className= 'wall';
+//     maze.appendChild(wall);
+//     wall.style.top = `${top}%`;
+//     wall.style.left = `${left}%`;
+//     wall.style.width = `${wallSize/2}%`;
+//     wall.style.height = `${length}%`
+// }
 
-createWallsV(0, 0, 100)
-createWallsV(5, 0, 10)
-createWallsV(5, 30, 10)
-createWallsV(5, 50, 30)
-createWallsV(5, 90, 10)
-createWallsV(10, 10, 30)
-createWallsV(10, 80, 10)
-createWallsV(15, 0, 30)
-createWallsV(15, 60, 20)
-createWallsV(20, 20, 40)
-createWallsV(25, 60, 30)
-createWallsV(30, 10, 40)
-createWallsV(30, 70, 10)
-createWallsV(35, 10, 30)
-createWallsV(35, 50, 10)
-createWallsV(35, 80, 10)
-createWallsV(40, 0, 30)
-createWallsV(40, 40, 10)
-createWallsV(40, 70, 30)
-createWallsV(45, 10, 20)
-createWallsV(45, 60, 20)
-createWallsV(55, 10, 40)
-createWallsV(55, 90, 10)
-createWallsV(60, 0, 10)
-createWallsV(60, 30, 10)
-createWallsV(60, 50, 20)
-createWallsV(60, 80, 10)
-createWallsV(65, 0, 20)
-createWallsV(65, 60, 20)
-createWallsV(70, 20, 40)
-createWallsV(75, 10, 20)
-createWallsV(75, 50, 20)
-createWallsV(75, 80, 10)
-createWallsV(80, 30, 30)
-createWallsV(80, 90, 10)
-createWallsV(85, 0, 10)
-createWallsV(85, 20, 30)
-createWallsV(85, 70, 20)
-createWallsV(90, 30, 10)
-createWallsV(90, 70, 30)
-createWallsV(95, 60, 30)
-createWallsV(100, 0, 100)
-
-
-
-
-
-// createWallsV(0, 0, mazeHeight);
-// createWallsH(0, mazeHeight-wallwidth, 300);
-// createWallsH(300, 0, mazeWidth-300);
-// createWallsV(mazeHeight-wallwidth, 0, mazeHeight);
-// createWallsH(mazeWidth-250, mazeHeight-wallwidth, 250);
-// createWallsH(240, 50, 300);
-// createWallsH(50, 50, 100);
-// createWallsH(50, 300, 200);
-// createWallsH(350, 300, 150);
-// createWallsV(300, 100, 250);
-// createWallsV(450, 50, 200)
-}
 
 createMaze(1000, 500)
 
