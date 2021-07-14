@@ -7,13 +7,12 @@ const btnMedium = document.getElementById("level-medium");
 const btnHard = document.getElementById("level-hard");
 const timerText = document.querySelector(".timer-text");
 const startSettings = document.querySelector(".start-settings");
-const loseMessage = document.querySelector("lose-game");
+const loseMessage = document.querySelector(".lose-game");
 const wallVariable = document.querySelectorAll(".wall")
 
 
 btnRules.onclick = () => {
     btnRules.classList.add("hidden");
-
 }
 
 const characterDisplay = document.querySelector(".character");
@@ -79,25 +78,33 @@ function buildWalls(arrayWalls) {
 
 
 let intervalId
-let counter = 5;
+let counter ;
 
 function startTimer() {
+    counter = 60
     intervalId = setInterval(function () {
         counter -= 1;
         timer.textContent = counter;
 
     if (counter === 0) {
         clearInterval(intervalId);
-        clearTimer();
+        loseGame()
     }
     }, 1000)
 }
 
-function clearTimer()
-{
-        clearInterval(intervalId);
-        counter = 60
-        timer.textContent = counter
+function clearTimer() {
+    clearInterval(intervalId);
+    counter = 60
+    timer.textContent = counter
+}
+
+function loseGame() {
+    loseMessage.classList.remove("hidden");
+    mazeArea.classList.toggle(".opaque");
+    characterDisplay.classList.toggle("opaque")
+
+    console.log("time is up!")
 }
 
 
@@ -172,111 +179,89 @@ btnHard.onclick = function () {
 
 
 document.onkeydown = function move(e) {
-    if (e.key === "ArrowRight") {
-        character.x += 1.5;
-        characterDisplay.style.left = character.x + "%";
 
-        if(character.x >= 100 - character.w) {
-            character.x = 100 - character.w; // container WIDTH - char WIDTH
+    //RIGHT
+    if (e.key === "d") {
+        
+        let doesItCollide = false;
+
+        walls.forEach(wall => {
+            if(isCollidingWall({...character,x: character.x + 1.5}, wall)) {
+                console.log("it's colliding at the right")
+                doesItCollide = true; 
+            }
+        })
+
+        if (doesItCollide === false) {
+            character.x += 1.5;
             characterDisplay.style.left = character.x + "%";
+        } 
+    }
+
+
+    //LEFT
+    if (e.key === "q") {
+
+        let doesItCollide = false;
+
+        walls.forEach(wall => {
+            if(isCollidingWall({...character,x: character.x - 1.5}, wall)) {
+                console.log("it's colliding at the left")
+                doesItCollide = true; 
+            }
+        })
+
+        if (doesItCollide === false) {
+            character.x -= 1.5;
+        characterDisplay.style.left = character.x + "%";
         }
     }
 
-    if (e.key === "ArrowLeft") {
-        character.x -= 1.5;
-        characterDisplay.style.left = character.x + "%";
+    //UP
+    if (e.key === "z") {
+        let doesItCollide = false;
+        walls.forEach(wall => {
+            if(isCollidingWall({...character,y: character.y - 1.5}, wall)) {
+                console.log("it's colliding at the top")
+                doesItCollide = true  
+            } 
+        })
 
-        // if(isCollidingWalls(walls) === true) {
-        //     character.x = character.x;
-        //     characterDisplay.style.left = character.x + "%";
-        // }
-
-        if(character.x <= 0) {
-            character.x = 0; 
-            characterDisplay.style.left = character.x + "%";
-        }
-    }
-
-    
-    if (e.key === "ArrowUp") {
-        character.y -= 1.5;
-        characterDisplay.style.top = character.y + "%";
-
-        // if(isCollidingWalls(walls) === true) {
-        //     character.y = character.y;
-        //     characterDisplay.style.top = character.y + "%"
-        // }
-
-        if(character.y <= 0) {
-            character.y = 0;
+        if (doesItCollide === false) {
+            character.y -= 1.5;
             characterDisplay.style.top = character.y + "%";
         }
     }
 
-    if (e.key === "ArrowDown") {
-        characterDisplay.style.top = character.y + "%";
-
-      
+    
+    //DOWN
+    if (e.key === "s") {
+        let doesItCollide = false;
+        walls.forEach(wall => {
+            if(isCollidingWall({...character,y: character.y + 1.5}, wall)) {
+                console.log("it's colliding at the top")
+                doesItCollide = true  
+            }
+            
+        })
         
-        // willCollideWithWall({
-        //     x: character.x,
-        //     y: character.y + 1.5,
-        //     w: character.w,
-        //     h: character.h
-
-        // }, walls)
-
-        walls.forEach(wall => isCollidingWall(wall))
-
-        console.log(willCollideWithWall({...character,y: character.y + 1.5}, walls))
-
-            // if(willCollideWithWall(newCharacter, walls)){
-            //     console.log("colliding")
-            // }
-
-        character.y += 1.5;
-
-        // if(isCollidingWall(walls) !== false) {
-        //     character.y = isCollidingWall(walls).y - character.h;
-        //     characterDisplay.style.top = character.y + "%";
-        // }
-
-
-        if(character.y >= 100 - character.h) {
-            character.y = 100 - character.h;
-            characterDisplay.style.top = character.y + "%"
+        if(doesItCollide === false) {
+            character.y += 1.5;
+            characterDisplay.style.top = character.y + "%";
         }
     }
 }
 
 
-function willCollideWithWall(character, walls) {
-
-    for (i = 0; i < walls.length; i++) {
-        const wall = walls[i]
-        if((character.x + character.w) > wall.x && character.x < (wall.x + wall.w) && (character.y + character.h) > wall.y && character.y < (wall.y + wall.h)) {
-            return true;
-        } else return false
-       
-    }   
-}
-
-console.log(wallVariable)
-
-function isCollidingWall (wall) {
+function isCollidingWall (character, wall) {
     if((character.x + character.w) > wall.x && character.x < (wall.x + wall.w) && (character.y + character.h) > wall.y && character.y < (wall.y + wall.h)) {
-        return console.log("colliding")
+        return true
     } else return false
 }
 
 
-function loseGame () {
-    if(counter === 0) {
-        loseGame.classList.remove("hidden")
-    }
-}
 
-loseGame()
+
 
 
 

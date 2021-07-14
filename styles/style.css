@@ -13,11 +13,6 @@ body {
     font-family: 'Kanit', sans-serif;
 }
 
-
-#start-game {
-
-}
-
 .game-section {
     display: flex;
     flex-direction: column;
@@ -116,9 +111,24 @@ body {
 }
 
 .lose-game {
-    background-color: red;
+    background-color: rgba(198, 198, 198, 0.5);
     color: white;
-    margin: auto;
+    margin: 0 auto;
+    top: 20%;
     height: 300px;
     width: 1000px;
+    position: absolute;
 }
+
+.lose-game h2 {
+    font-size: 3em;
+    text-align: center;
+    text-transform: uppercase;
+
+}
+
+.opaque {
+    opacity: 0.5
+}
+
+
