@@ -1,6 +1,78 @@
+class Maze {
+    constructor(w, h) {
+        this.w = w;
+        this.h = h
+    }
+
+    createMazeArea() {
+        const newMaze = document.createElement("div");
+        newMaze.className = "maze-area";
+        document.querySelector(".game-section").insertBefore(newMaze, document.getElementById("btn-stop"))
+        newMaze.style.width = this.w + "px";
+        newMaze.style.height = this.h + "px";
+    }
+
+    buildWalls(arrayWalls) {
+        arrayWalls.forEach(wall => {
+            const newWall = document.createElement("div");
+            newWall.className = 'wall';
+            document.querySelector(".maze-area").appendChild(newWall);
+            newWall.style.top = `${wall.y}%`;
+            newWall.style.left = `${wall.x}%`;
+            newWall.style.width = `${wall.w}%`;
+            newWall.style.height = `${wall.h}%`;
+        })
+    }
+
+    createMaze(arrayWalls) {
+        this.createMazeArea();
+        this.buildWalls(arrayWalls)
+    }
+    
+}
+
+class Character {
+    constructor(x, y, w, h) {
+        this.x = x;
+        this.y = y; 
+        this.w = w;
+        this.h = h
+    }
+
+    createCharacter() {
+    const newChar = document.createElement("div");
+    newChar.className = "character";
+    document.querySelector(".maze-area").appendChild(newChar)
+    }
+
+    setAttributeCharacter() {
+    document.querySelector(".character").style.width = this.w + "%";
+    document.querySelector(".character").style.height = this.h + "%";
+    document.querySelector(".character").style.top = this.y + "%";
+    document.querySelector(".character").style.left = this.x + "%";
+    }
+
+    playerExits () {
+        if (character.y > 100) {
+            winGame();
+            return true
+        }
+    }
+}
+
+function destroyWalls(htmlWalls) {
+    for (let i = 0; i < htmlWalls.length; i++) {
+        if(!htmlWalls.item(i).classList.contains("character")) {
+            const closestParent = htmlWalls.item(i).closest("#maze-area")
+            closestParent.removeChild(htmlWalls.item(i))
+        }
+    }   
+}
+
+
 // BUTTONS
 // const btnStart = document.getElementById("start-game");
-const btnStop = document.getElementById("stop-game")
+const btnStop = document.getElementById("btn-stop")
 const btnEasy = document.getElementById("level-easy");
 const btnMedium = document.getElementById("level-medium");
 const levelBtns = document.querySelectorAll(".levels button.level");
@@ -8,7 +80,8 @@ const btnHard = document.getElementById("level-hard");
 
 // GAME AREA
 const characterDisplay = document.querySelector(".character");
-const mazeArea = document.getElementById("container");
+const mazeArea = document.querySelector(".maze-area")
+const gameArea = document.querySelector(".game-section");
 const wallDisplay = document.querySelectorAll(".wall");
 const timerDisplay = document.getElementById("timer");
 
@@ -21,73 +94,6 @@ const loseMessage = document.querySelector(".lose-game");
 const winMessage = document.querySelector(".win-game")
 
 
-class Character {
-    constructor(x, y, w, h) {
-        this.x = x;
-        this.y = y; 
-        this.w = w;
-        this.h = h
-    }
-
-    createCharacter() {
-    characterDisplay.style.width = this.w + "%";
-    characterDisplay.style.height = this.h + "%";
-    characterDisplay.style.top = this.y + "%";
-    characterDisplay.style.left = this.x + "%";
-    }
-
-    playerExits () {
-        if (character.y > 100) {
-            winGame();
-            return true
-        }
-    }
-}
-
-class Maze {
-    constructor(w, h) {
-        this.w = w;
-        this.h = h
-    }
-
-    createMaze() {
-        mazeArea.style.width = this.w + "px";
-        mazeArea.style.height = this.h + "px";
-        buildWalls(walls)
-    }
-}
-
-const character = new Character(46, 96, 2, 4)
-const maze = new Maze(1000, 500)
-
-
-
-
-// CREATE WALLS
-
-function buildWalls(arrayWalls) {
-    arrayWalls.forEach(wall => {
-        const newWall = document.createElement("div");
-        newWall.className= 'wall';
-        mazeArea.appendChild(newWall);
-        newWall.style.top = `${wall.y}%`;
-        newWall.style.left = `${wall.x}%`;
-        newWall.style.width = `${wall.w}%`;
-        newWall.style.height = `${wall.h}%`;
-    })
-}
-
-function destroyWalls(htmlWalls) {
-    for (let i = 0; i < htmlWalls.length; i++) {
-        if(!htmlWalls.item(i).classList.contains("character")) {
-            const closestParent = htmlWalls.item(i).closest("#container")
-            closestParent.removeChild(htmlWalls.item(i))
-        }
-    }   
-}
-
-
-console.log(mazeArea.children)
 // TIMER
 let intervalId
 let counter ;
@@ -113,13 +119,13 @@ function clearTimer() {
 
 function loseGame() {
     loseMessage.classList.remove("hidden");
-    mazeArea.classList.toggle("opaque");
-    characterDisplay.classList.toggle("opaque")
+    gameArea.classList.toggle("opaque");
+    document.querySelector(".character").classList.toggle("opaque")
 }
 
 function winGame() {
     winMessage.classList.remove("hidden");
-    mazeArea.classList.add("opaque");
+    gameArea.classList.add("opaque");
     characterDisplay.classList.toggle("opaque");
     clearTimer()
 
@@ -132,20 +138,23 @@ btnStop.onclick = stopGame
 
 // SELECT LEVEL
 btnEasy.onclick = function () { 
+    mazeEasy.createMaze(wallsEasy);
     startGame();
-    maze.createMaze();
+    
 }
 
 
 btnMedium.onclick = function () { 
+    mazeMedium.createMaze(wallsMedium);
     startGame();
-    maze.createMaze();
+    
 }
 
 
 btnHard.onclick = function () { 
+    mazeHard.createMaze(wallsHard);
     startGame();
-    maze.createMaze();
+    
 }
 
 function startGame() { // START THE GAME
@@ -161,6 +170,7 @@ function startGame() { // START THE GAME
     // SET GAME
     
     character.createCharacter()
+    character.setAttributeCharacter()
     startTimer(60)
     timerText.classList.remove("hidden");
 }
@@ -173,82 +183,64 @@ function stopGame() {
     startSettings.classList.remove("hidden")
 
     // END GAME
-    destroyWalls(mazeArea.children)
+    destroyWalls(gameArea.children)
     clearTimer()
     characterDisplay.classList.add("hidden")
 }
 
-document.onkeydown = function (e) {
-    character.playerExits()
+// COMMANDS
 
-    if(!character.playerExits()) {
-    //RIGHT
-        if (e.key === "d") {
-            
-            let doesItCollide = false;
+function commands(walls) {
+    document.onkeydown = function (e) {
+        character.playerExits()
 
-            walls.forEach(wall => {
-                if(isCollidingWall({...character,x: character.x + 1.5}, wall)) {
-                    doesItCollide = true; 
-                }
-            })
-
-            if (doesItCollide === false) {
-                character.x += 1.5;
-                characterDisplay.style.left = character.x + "%";
-            } 
-        }
-
-        //LEFT
-        if (e.key === "q") {
-
-            let doesItCollide = false;
-
-            walls.forEach(wall => {
-                if(isCollidingWall({...character,x: character.x - 1.5}, wall)) {
-                    doesItCollide = true; 
-                }
-            })
-
-            if (doesItCollide === false) {
-                character.x -= 1.5;
-            characterDisplay.style.left = character.x + "%";
-            }
-        }
-
-        //UP
-        if (e.key === "z") {
-            let doesItCollide = false;
-            walls.forEach(wall => {
-                if(isCollidingWall({...character,y: character.y - 1.5}, wall)) {
-                    doesItCollide = true  
-                } 
-            })
-
-            if (doesItCollide === false) {
-                character.y -= 1.5;
-                characterDisplay.style.top = character.y + "%";
-            }
-        }
-
+        if(!character.playerExits()) {
         
-        //DOWN
-        if (e.key === "s") {
-            let doesItCollide = false;
-            walls.forEach(wall => {
-                if(isCollidingWall({...character,y: character.y + 1.5}, wall)) {
-                    doesItCollide = true  
-                }
-                
-            })
-            
-            if(doesItCollide === false) {
-                character.y += 1.5;
-                characterDisplay.style.top = character.y + "%";
+            if (e.key === "d") { //RIGHT
+                let doesItCollide = false;
+                walls.forEach(wall => {
+                    if(isCollidingWall({...character,x: character.x + 1.5}, wall)) 
+                    { doesItCollide = true; }
+                })
+                if (doesItCollide === false) 
+                { character.x += 1.5;
+                    document.querySelector(".character").style.left = character.x + "%"; }     
+            }
+
+            if (e.key === "q") { //LEFT
+                let doesItCollide = false;
+                walls.forEach(wall => {
+                    if(isCollidingWall({...character,x: character.x - 1.5}, wall)) {
+                        doesItCollide = true; }
+                })
+                if (doesItCollide === false) {
+                    character.x -= 1.5;
+                    document.querySelector(".character").style.left = character.x + "%"; }
+            }
+
+            if (e.key === "z") { //UP
+                let doesItCollide = false;
+                walls.forEach(wall => {
+                    if(isCollidingWall({...character,y: character.y - 1.5}, wall)) {
+                        doesItCollide = true } 
+                })
+                if (doesItCollide === false) {
+                    character.y -= 1.5;
+                    document.querySelector(".character").style.top = character.y + "%"; }
+            }
+
+            if (e.key === "s") { //DOWN
+                let doesItCollide = false;
+                walls.forEach(wall => {
+                    if(isCollidingWall({...character,y: character.y + 1.5}, wall)) {
+                        doesItCollide = true }      
+                })
+                if(doesItCollide === false) {
+                    character.y += 1.5;
+                    document.querySelector(".character").style.top = character.y + "%"; }
             }
         }
     }
-
 }
 
 
@@ -259,6 +251,19 @@ function isCollidingWall (character, wall) {
         return true
     } else return false
 }
+
+
+
+const mazeEasy = new Maze(1000, 500)
+const mazeMedium = new Maze(1000, 500)
+const mazeHard = new Maze(1000, 500)
+const character = new Character (46, 0, 2, 4)
+
+commands(wallsEasy)
+
+
+
+
 
 
 

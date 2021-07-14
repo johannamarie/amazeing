@@ -40,11 +40,12 @@ body {
 }
 
 
-#container {
+#maze-area {
     position: relative;
     background-size: 101%;
     background-position: center;
     border: 1px solid white;
+    
 }
 
 .character {
