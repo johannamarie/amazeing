@@ -31,12 +31,12 @@ body {
     align-self: right;
 }
 
-.btn.start {
-    /* background-color: red; */
+.btn.started {
+    background-color: red;
 }
 
-.btn.stop {
-    /* background-color: navy */
+.btn.stopped {
+    background-color: navy
 }
 
 
@@ -99,10 +99,12 @@ body {
     flex-direction: column;
     justify-content:space-around;
     align-items: center;
+    position: absolute;
     width: 1000px;
-    margin: auto;
+    margin: auto 0;
     padding: 3em;
-    position: relative;
+    
+    top: 20%
 }
 
 
@@ -120,15 +122,41 @@ body {
     position: absolute;
 }
 
-.lose-game h2 {
+.lose-game h3 {
     font-size: 3em;
     text-align: center;
     text-transform: uppercase;
+}
 
+.win-game {
+    background-color: rgba(198, 198, 198, 0.5);
+    color: white;
+    margin: 0 auto;
+    top: 20%;
+    height: 300px;
+    width: 1000px;
+    position: absolute;
+}
+
+.win-game h3{
+    font-size: 3em;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 .opaque {
     opacity: 0.5
 }
 
+h2, h1 {
+    text-align: center
+}
 
+#stop-button {
+    background-image: ;
+}
+
+
+.choose-level {
+    font-weight: bold
+}

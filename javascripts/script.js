@@ -1,25 +1,24 @@
-const btnStart = document.getElementById("start-game");
-const btnRules = document.getElementById("rules");
-const rulesText = document.getElementById("rules-section");
-const levelBtns = document.querySelectorAll(".levels button.level")
+// BUTTONS
+// const btnStart = document.getElementById("start-game");
+const btnStop = document.getElementById("stop-game")
 const btnEasy = document.getElementById("level-easy");
 const btnMedium = document.getElementById("level-medium");
+const levelBtns = document.querySelectorAll(".levels button.level");
 const btnHard = document.getElementById("level-hard");
+
+// GAME AREA
+const characterDisplay = document.querySelector(".character");
+const mazeArea = document.getElementById("container");
+const wallDisplay = document.querySelectorAll(".wall");
+const timerDisplay = document.getElementById("timer");
+
+// TEXT
+const btnRules = document.getElementById("rules");
+const rulesText = document.getElementById("rules-section");
 const timerText = document.querySelector(".timer-text");
 const startSettings = document.querySelector(".start-settings");
 const loseMessage = document.querySelector(".lose-game");
-const wallVariable = document.querySelectorAll(".wall")
-
-
-btnRules.onclick = () => {
-    btnRules.classList.add("hidden");
-}
-
-const characterDisplay = document.querySelector(".character");
-const mazeArea = document.getElementById("container")
-const timerDisplay = document.getElementById("timer");
-const wallDisplay = document.querySelectorAll(".wall");
-
+const winMessage = document.querySelector(".win-game")
 
 
 class Character {
@@ -36,9 +35,14 @@ class Character {
     characterDisplay.style.top = this.y + "%";
     characterDisplay.style.left = this.x + "%";
     }
+
+    playerExits () {
+        if (character.y > 100) {
+            winGame();
+            return true
+        }
+    }
 }
-
-
 
 class Maze {
     constructor(w, h) {
@@ -53,8 +57,7 @@ class Maze {
     }
 }
 
-
-const character = new Character(46, 0, 2, 4)
+const character = new Character(46, 96, 2, 4)
 const maze = new Maze(1000, 500)
 
 
@@ -63,7 +66,6 @@ const maze = new Maze(1000, 500)
 // CREATE WALLS
 
 function buildWalls(arrayWalls) {
-
     arrayWalls.forEach(wall => {
         const newWall = document.createElement("div");
         newWall.className= 'wall';
@@ -75,13 +77,23 @@ function buildWalls(arrayWalls) {
     })
 }
 
+function destroyWalls(htmlWalls) {
+    for (let i = 0; i < htmlWalls.length; i++) {
+        if(!htmlWalls.item(i).classList.contains("character")) {
+            const closestParent = htmlWalls.item(i).closest("#container")
+            closestParent.removeChild(htmlWalls.item(i))
+        }
+    }   
+}
 
 
+console.log(mazeArea.children)
+// TIMER
 let intervalId
 let counter ;
 
-function startTimer() {
-    counter = 60
+function startTimer(counterBegin) {
+    counter = counterBegin
     intervalId = setInterval(function () {
         counter -= 1;
         timer.textContent = counter;
@@ -95,162 +107,151 @@ function startTimer() {
 
 function clearTimer() {
     clearInterval(intervalId);
-    counter = 60
-    timer.textContent = counter
+    timer.textContent = counter 
 }
+
 
 function loseGame() {
     loseMessage.classList.remove("hidden");
-    mazeArea.classList.toggle(".opaque");
+    mazeArea.classList.toggle("opaque");
     characterDisplay.classList.toggle("opaque")
+}
 
-    console.log("time is up!")
+function winGame() {
+    winMessage.classList.remove("hidden");
+    mazeArea.classList.add("opaque");
+    characterDisplay.classList.toggle("opaque");
+    clearTimer()
+
 }
 
 
+// STOP BUTTON
+btnStop.onclick = stopGame
 
-// WHEN I CLICK ON START
-btnStart.addEventListener('click', () => {
-    // IF THE GAME WAS NOT STARTED
-    if (btnStart.classList.contains("stop")) {
 
-        btnStart.classList.remove('stop');
-        btnStart.classList.add("start");
-        btnRules.classList.remove("hidden");
-        btnRules.classList.remove("hidden");
-        btnEasy.classList.toggle("hidden");
-        btnHard.classList.toggle("hidden");
-        btnMedium.classList.toggle("hidden");
-        btnStart.textContent = "START";
-        
-        timer.clearTimer()
-    }
+// SELECT LEVEL
+btnEasy.onclick = function () { 
+    startGame();
+    maze.createMaze();
+}
+
+
+btnMedium.onclick = function () { 
+    startGame();
+    maze.createMaze();
+}
+
+
+btnHard.onclick = function () { 
+    startGame();
+    maze.createMaze();
+}
+
+function startGame() { // START THE GAME
+    //MAKE DISAPPEAR
+    btnEasy.classList.add("hidden");
+    btnMedium.classList.add("hidden");
+    btnHard.classList.add("hidden");
+    startSettings.classList.add("hidden");
     
-    // GAME ONGOING
-    else if (btnStart.classList.contains("start")) {
+    // MAKE BTN STOP
+    btnStop.classList.remove("hidden");
 
-        if(btnEasy.classList.contains('selected')) {
-            maze.createMaze()
-        }
+    // SET GAME
+    
+    character.createCharacter()
+    startTimer(60)
+    timerText.classList.remove("hidden");
+}
+  
+function stopGame() {
+    // MAKE APPEAR
+    btnEasy.classList.remove("hidden");
+    btnMedium.classList.remove("hidden");
+    btnHard.classList.remove("hidden");
+    startSettings.classList.remove("hidden")
 
-        if(btnMedium.classList.contains('selected')) {
-            maze.createMaze()
-        }
-
-        if(btnHard.classList.contains('selected')) {
-            maze.createMaze()
-        }
-
-        btnStart.classList.remove("start");
-        btnStart.classList.add("stop");
-        btnRules.classList.add("hidden");
-        btnEasy.classList.add("hidden");
-        btnMedium.classList.add("hidden");
-        btnHard.classList.add("hidden");
-        rulesText.classList.add("hidden");
-        timerText.classList.remove("hidden");
-        startSettings.classList.add('hidden')
-
-        btnStart.textContent = "STOP";
-
-
-        
-        character.createCharacter()
-
-        
-        startTimer();
-    }
-})
-
-
-btnEasy.onclick = function () {
-    btnEasy.classList.toggle('selected');
+    // END GAME
+    destroyWalls(mazeArea.children)
+    clearTimer()
+    characterDisplay.classList.add("hidden")
 }
 
-btnMedium.onclick = function () {
-    btnMedium.classList.toggle('selected');
-}
+document.onkeydown = function (e) {
+    character.playerExits()
 
-
-btnHard.onclick = function () {
-    btnHard.classList.toggle('selected')
-}
-
-
-
-document.onkeydown = function move(e) {
-
+    if(!character.playerExits()) {
     //RIGHT
-    if (e.key === "d") {
-        
-        let doesItCollide = false;
-
-        walls.forEach(wall => {
-            if(isCollidingWall({...character,x: character.x + 1.5}, wall)) {
-                console.log("it's colliding at the right")
-                doesItCollide = true; 
-            }
-        })
-
-        if (doesItCollide === false) {
-            character.x += 1.5;
-            characterDisplay.style.left = character.x + "%";
-        } 
-    }
-
-
-    //LEFT
-    if (e.key === "q") {
-
-        let doesItCollide = false;
-
-        walls.forEach(wall => {
-            if(isCollidingWall({...character,x: character.x - 1.5}, wall)) {
-                console.log("it's colliding at the left")
-                doesItCollide = true; 
-            }
-        })
-
-        if (doesItCollide === false) {
-            character.x -= 1.5;
-        characterDisplay.style.left = character.x + "%";
-        }
-    }
-
-    //UP
-    if (e.key === "z") {
-        let doesItCollide = false;
-        walls.forEach(wall => {
-            if(isCollidingWall({...character,y: character.y - 1.5}, wall)) {
-                console.log("it's colliding at the top")
-                doesItCollide = true  
-            } 
-        })
-
-        if (doesItCollide === false) {
-            character.y -= 1.5;
-            characterDisplay.style.top = character.y + "%";
-        }
-    }
-
-    
-    //DOWN
-    if (e.key === "s") {
-        let doesItCollide = false;
-        walls.forEach(wall => {
-            if(isCollidingWall({...character,y: character.y + 1.5}, wall)) {
-                console.log("it's colliding at the top")
-                doesItCollide = true  
-            }
+        if (e.key === "d") {
             
-        })
+            let doesItCollide = false;
+
+            walls.forEach(wall => {
+                if(isCollidingWall({...character,x: character.x + 1.5}, wall)) {
+                    doesItCollide = true; 
+                }
+            })
+
+            if (doesItCollide === false) {
+                character.x += 1.5;
+                characterDisplay.style.left = character.x + "%";
+            } 
+        }
+
+        //LEFT
+        if (e.key === "q") {
+
+            let doesItCollide = false;
+
+            walls.forEach(wall => {
+                if(isCollidingWall({...character,x: character.x - 1.5}, wall)) {
+                    doesItCollide = true; 
+                }
+            })
+
+            if (doesItCollide === false) {
+                character.x -= 1.5;
+            characterDisplay.style.left = character.x + "%";
+            }
+        }
+
+        //UP
+        if (e.key === "z") {
+            let doesItCollide = false;
+            walls.forEach(wall => {
+                if(isCollidingWall({...character,y: character.y - 1.5}, wall)) {
+                    doesItCollide = true  
+                } 
+            })
+
+            if (doesItCollide === false) {
+                character.y -= 1.5;
+                characterDisplay.style.top = character.y + "%";
+            }
+        }
+
         
-        if(doesItCollide === false) {
-            character.y += 1.5;
-            characterDisplay.style.top = character.y + "%";
+        //DOWN
+        if (e.key === "s") {
+            let doesItCollide = false;
+            walls.forEach(wall => {
+                if(isCollidingWall({...character,y: character.y + 1.5}, wall)) {
+                    doesItCollide = true  
+                }
+                
+            })
+            
+            if(doesItCollide === false) {
+                character.y += 1.5;
+                characterDisplay.style.top = character.y + "%";
+            }
         }
     }
+
 }
+
+
 
 
 function isCollidingWall (character, wall) {
