@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+    <div class="timer-text hidden">
+    <p>You've got <span id="timer">60</span> seconds left.</p>
+    </div>
+
+
+<!-- GAME AREA-->
+    <div class="game-section">
+        <div id="container">
+            <div class="character" class="startPosition"></div>
+            <div id="exit"></div>
+        </div>
+    </div>
+
+    <div class="start-settings">
+        <!-- RULES PRESENTATION -->
+            <div id="rules-section" class="explanations">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate arcu sed finibus porttitor. Praesent nec tellus viverra, mattis massa vel, aliquet leo.</p>
+                <p>Maecenas congue interdum elit ut finibus. Sed cursus metus lectus, eu posuere diam venenatis non. Curabitur sed bibendum libero. Donec euismod dui non tortor commodo, eu lobortis orci luctus.</p>
+                <p>Integer imperdiet sapien quis ligula rutrum, condimentum porttitor justo commodo. Proin est metus, malesuada non maximus nec, ornare at dui. Donec hendrerit lorem risus, vitae vulputate elit iaculis quis.</p>
+            </div>
+    
+        <!-- LEVELS BUTTONS -->
+            <div class="levels">
+                <button id='level-easy' class="level">EASY</button>
+                <button id="level-medium" class="level">MEDIUM</button>
+                <button id="level-hard" class="level">HARD</button>
+            </div>
+    
+        <!-- START BUTTONS -->
+            <div class="start-buttons">
+                <button id="start-game" class="btn start">START</button>
+                <button id="rules">RULES</button>
+            </div>
+        </div>
+
+        <div class="lose-game hidden">
+            <p>You lost !</p>
+        </div>
+
+    
+    <script src="javascripts/maze-1.js"></script>
+    <script src="javascripts/script.js"></script>
+    
+</body>
+</html>

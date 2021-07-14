@@ -98,7 +98,7 @@ function addIdWall (array) {
     return array
 }
 
-console.log(addIdWall(walls))
+// console.log(addIdWall(walls))
 
 
 

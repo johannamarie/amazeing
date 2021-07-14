@@ -1,10 +1,14 @@
 const btnStart = document.getElementById("start-game");
 const btnRules = document.getElementById("rules");
 const rulesText = document.getElementById("rules-section");
+const levelBtns = document.querySelectorAll(".levels button.level")
 const btnEasy = document.getElementById("level-easy");
 const btnMedium = document.getElementById("level-medium");
 const btnHard = document.getElementById("level-hard");
-const timerText = document.querySelector("timer-text");
+const timerText = document.querySelector(".timer-text");
+const startSettings = document.querySelector(".start-settings");
+const loseMessage = document.querySelector("lose-game");
+const wallVariable = document.querySelectorAll(".wall")
 
 
 btnRules.onclick = () => {
@@ -51,40 +55,8 @@ class Maze {
 }
 
 
-class Timer {
-    constructor(counter, interval) { 
-        this.counter = counter;
-        this.interval = interval
-    }
-
-    displayTimer() {
-        counter1 -= 1;
-        timerDisplay.textContent = counter1;
-        console.log(counter1)
-    }
-
-    startTimer() {
-        let counter1 = this.counter;
-        let intervalId = setInterval(function () {
-            
-    
-        if (counter1 === 0) {
-            clearInterval(intervalId);
-            clearTimer();
-        }
-        }, this.interval)
-    }
-    
-    clearTimer() {
-        clearInterval(intervalId);
-        counter1 = this.counter
-        timerDisplay.textContent = counter
-    }
-}
-
 const character = new Character(46, 0, 2, 4)
 const maze = new Maze(1000, 500)
-const timer = new Timer(60, 1000)
 
 
 
@@ -105,14 +77,40 @@ function buildWalls(arrayWalls) {
 }
 
 
+
+let intervalId
+let counter = 5;
+
+function startTimer() {
+    intervalId = setInterval(function () {
+        counter -= 1;
+        timer.textContent = counter;
+
+    if (counter === 0) {
+        clearInterval(intervalId);
+        clearTimer();
+    }
+    }, 1000)
+}
+
+function clearTimer()
+{
+        clearInterval(intervalId);
+        counter = 60
+        timer.textContent = counter
+}
+
+
+
+// WHEN I CLICK ON START
 btnStart.addEventListener('click', () => {
-    // GAME STOPPED
+    // IF THE GAME WAS NOT STARTED
     if (btnStart.classList.contains("stop")) {
 
         btnStart.classList.remove('stop');
         btnStart.classList.add("start");
         btnRules.classList.remove("hidden");
-        btnRules.classList.toggle("hidden");
+        btnRules.classList.remove("hidden");
         btnEasy.classList.toggle("hidden");
         btnHard.classList.toggle("hidden");
         btnMedium.classList.toggle("hidden");
@@ -124,6 +122,18 @@ btnStart.addEventListener('click', () => {
     // GAME ONGOING
     else if (btnStart.classList.contains("start")) {
 
+        if(btnEasy.classList.contains('selected')) {
+            maze.createMaze()
+        }
+
+        if(btnMedium.classList.contains('selected')) {
+            maze.createMaze()
+        }
+
+        if(btnHard.classList.contains('selected')) {
+            maze.createMaze()
+        }
+
         btnStart.classList.remove("start");
         btnStart.classList.add("stop");
         btnRules.classList.add("hidden");
@@ -132,16 +142,32 @@ btnStart.addEventListener('click', () => {
         btnHard.classList.add("hidden");
         rulesText.classList.add("hidden");
         timerText.classList.remove("hidden");
+        startSettings.classList.add('hidden')
 
         btnStart.textContent = "STOP";
 
 
         
         character.createCharacter()
-        maze.createMaze()
-        timer.startTimer();
+
+        
+        startTimer();
     }
 })
+
+
+btnEasy.onclick = function () {
+    btnEasy.classList.toggle('selected');
+}
+
+btnMedium.onclick = function () {
+    btnMedium.classList.toggle('selected');
+}
+
+
+btnHard.onclick = function () {
+    btnHard.classList.toggle('selected')
+}
 
 
 
@@ -154,151 +180,106 @@ document.onkeydown = function move(e) {
             character.x = 100 - character.w; // container WIDTH - char WIDTH
             characterDisplay.style.left = character.x + "%";
         }
-
     }
+
     if (e.key === "ArrowLeft") {
         character.x -= 1.5;
         characterDisplay.style.left = character.x + "%";
+
+        // if(isCollidingWalls(walls) === true) {
+        //     character.x = character.x;
+        //     characterDisplay.style.left = character.x + "%";
+        // }
 
         if(character.x <= 0) {
             character.x = 0; 
             characterDisplay.style.left = character.x + "%";
         }
-
     }
-    if (e.key === "ArrowDown") {
-        character.y += 1.5;
+
+    
+    if (e.key === "ArrowUp") {
+        character.y -= 1.5;
         characterDisplay.style.top = character.y + "%";
+
+        // if(isCollidingWalls(walls) === true) {
+        //     character.y = character.y;
+        //     characterDisplay.style.top = character.y + "%"
+        // }
+
+        if(character.y <= 0) {
+            character.y = 0;
+            characterDisplay.style.top = character.y + "%";
+        }
+    }
+
+    if (e.key === "ArrowDown") {
+        characterDisplay.style.top = character.y + "%";
+
+      
+        
+        // willCollideWithWall({
+        //     x: character.x,
+        //     y: character.y + 1.5,
+        //     w: character.w,
+        //     h: character.h
+
+        // }, walls)
+
+        walls.forEach(wall => isCollidingWall(wall))
+
+        console.log(willCollideWithWall({...character,y: character.y + 1.5}, walls))
+
+            // if(willCollideWithWall(newCharacter, walls)){
+            //     console.log("colliding")
+            // }
+
+        character.y += 1.5;
+
+        // if(isCollidingWall(walls) !== false) {
+        //     character.y = isCollidingWall(walls).y - character.h;
+        //     characterDisplay.style.top = character.y + "%";
+        // }
+
 
         if(character.y >= 100 - character.h) {
             character.y = 100 - character.h;
             characterDisplay.style.top = character.y + "%"
         }
     }
-    
-    if (e.key === "ArrowUp") {
-        character.y -= 1.5;
-        characterDisplay.style.top = character.y + "%";
-
-        if(character.y <= 0) {
-            character.y = 0;
-            characterDisplay.style.top = character.y + "%";
-        }
-
-    }
 }
 
 
+function willCollideWithWall(character, walls) {
+
+    for (i = 0; i < walls.length; i++) {
+        const wall = walls[i]
+        if((character.x + character.w) > wall.x && character.x < (wall.x + wall.w) && (character.y + character.h) > wall.y && character.y < (wall.y + wall.h)) {
+            return true;
+        } else return false
+       
+    }   
+}
+
+console.log(wallVariable)
+
+function isCollidingWall (wall) {
+    if((character.x + character.w) > wall.x && character.x < (wall.x + wall.w) && (character.y + character.h) > wall.y && character.y < (wall.y + wall.h)) {
+        return console.log("colliding")
+    } else return false
+}
 
 
+function loseGame () {
+    if(counter === 0) {
+        loseGame.classList.remove("hidden")
+    }
+}
 
-
-// START POSITION
-
-
-
-// function move(e) {
-//     if (e.key === "ArrowRight") {
-//         character.x += 1.5;
-//         character.style.left = character.x + "%";
-//         if(character.x >= maze - charWidth) {
-//             charLeft = mazeWidth - charWidth; // container WIDTH - char WIDTH
-//             character.style.left = charLeft + "%";
-//         }
-//         // console.log(isColliding(walls))
-//     }
-//     if (e.key === "ArrowLeft") {
-//         charLeft -= 1.5;
-//         character.style.left = charLeft + "%";
-//         if(charLeft <= 0) {
-//             charLeft = 0; 
-//             character.style.left = charLeft + "%";
-//         }
-//         // console.log(isColliding())
-//     }
-//     if (e.key === "ArrowDown") {
-//         charTop += 1.5;
-//         character.style.top = charTop + "%";
-//         if(charTop >= mazeHeight - charHeight) {
-//             charTop = mazeHeight - charHeight;
-//             character.style.top = charTop + "%"
-//         }
-//         // console.log(isColliding())
-//     }
-//     if (e.key === "ArrowUp") {
-//         charTop -= 1.5;
-//         character.style.top = charTop + "%";
-//         if(charTop <= 0) {
-//             charTop = 0;
-//             character.style.top = charTop + "%";
-//         }
-//         // console.log(isColliding())
-//     }
-// }
-
-// MAZE
-
-// const maze1 = {w: 1000, h: 500}
-// function createMaze(maze) {
-//     mazeArea.style.width = maze.w + "px";
-//     mazeArea.style.height = maze.h + "px";
-//     buildWalls(wallsMaze1)
-// }
-
-// createMaze(maze1)
+loseGame()
 
 
 
 
 
-
-// TIMER
-
-
-
-
-// console.log(walls)
-
-// function isColliding (wall) {
-
-//     //top-left-corner of character
-//     if(charLeft > wall.x && charLeft < wall.x + wall.w) {
-//         if(charTop > wall.y && charLeft < wall.y + wall.h) {
-//             console.log("collision")
-//         }
-//     } else return false
-  
-
-//     // if(((charTop + charHeight) < (wallTop)) && // the bottom of the character is 
-//     //     (charTop > (wallTop + wallHeight)) &&
-//     //     ((charLeft + charWidth) < wallLeft) &&
-//     //     (charLeft > (wallLeft + wallWidth)))
-//     //     console.log(true)
-//     // else console.log(false)
-// }
-
-// isColliding(wallsMaze1[0])
-
-
-
-
-// function startTimer() {
-//     let counter = 60;
-//     intervalId = setInterval(function () {
-//         counter -= 1;
-//         timer.textContent = counter;
-
-//     if (counter === 0) {
-//         clearInterval(intervalId);
-//         clearTimer();
-//     }
-//     }, 1000)
-// }
-
-// function clearTimer()
-// {
-//         clearInterval(intervalId);
-//         counter = 60
-//         timer.textContent = counter
-// }
 
