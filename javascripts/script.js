@@ -1,6 +1,19 @@
+const btnStart = document.getElementById("start-game");
+const btnRules = document.getElementById("rules");
+const rulesText = document.getElementById("rules-section");
+const btnEasy = document.getElementById("level-easy");
+const btnMedium = document.getElementById("level-medium");
+const btnHard = document.getElementById("level-hard");
+const timerText = document.querySelector("timer-text");
+
+
+btnRules.onclick = () => {
+    btnRules.classList.add("hidden");
+
+}
+
 const characterDisplay = document.querySelector(".character");
 const mazeArea = document.getElementById("container")
-const btnStart = document.getElementById("start-game");
 const timerDisplay = document.getElementById("timer");
 const wallDisplay = document.querySelectorAll(".wall");
 
@@ -98,6 +111,11 @@ btnStart.addEventListener('click', () => {
 
         btnStart.classList.remove('stop');
         btnStart.classList.add("start");
+        btnRules.classList.remove("hidden");
+        btnRules.classList.toggle("hidden");
+        btnEasy.classList.toggle("hidden");
+        btnHard.classList.toggle("hidden");
+        btnMedium.classList.toggle("hidden");
         btnStart.textContent = "START";
         
         timer.clearTimer()
@@ -108,13 +126,19 @@ btnStart.addEventListener('click', () => {
 
         btnStart.classList.remove("start");
         btnStart.classList.add("stop");
-        btnStart.textContent = "STOP"
+        btnRules.classList.add("hidden");
+        btnEasy.classList.add("hidden");
+        btnMedium.classList.add("hidden");
+        btnHard.classList.add("hidden");
+        rulesText.classList.add("hidden");
+        timerText.classList.remove("hidden");
+
+        btnStart.textContent = "STOP";
+
+
+        
         character.createCharacter()
         maze.createMaze()
-
-        // const player = new Player (150, 550, 50, 50, "orange");
-        // player.draw();
-
         timer.startTimer();
     }
 })
@@ -125,6 +149,7 @@ document.onkeydown = function move(e) {
     if (e.key === "ArrowRight") {
         character.x += 1.5;
         characterDisplay.style.left = character.x + "%";
+
         if(character.x >= 100 - character.w) {
             character.x = 100 - character.w; // container WIDTH - char WIDTH
             characterDisplay.style.left = character.x + "%";
@@ -134,6 +159,7 @@ document.onkeydown = function move(e) {
     if (e.key === "ArrowLeft") {
         character.x -= 1.5;
         characterDisplay.style.left = character.x + "%";
+
         if(character.x <= 0) {
             character.x = 0; 
             characterDisplay.style.left = character.x + "%";
@@ -143,6 +169,7 @@ document.onkeydown = function move(e) {
     if (e.key === "ArrowDown") {
         character.y += 1.5;
         characterDisplay.style.top = character.y + "%";
+
         if(character.y >= 100 - character.h) {
             character.y = 100 - character.h;
             characterDisplay.style.top = character.y + "%"
@@ -152,6 +179,7 @@ document.onkeydown = function move(e) {
     if (e.key === "ArrowUp") {
         character.y -= 1.5;
         characterDisplay.style.top = character.y + "%";
+
         if(character.y <= 0) {
             character.y = 0;
             characterDisplay.style.top = character.y + "%";

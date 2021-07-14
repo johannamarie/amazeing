@@ -1,14 +1,21 @@
-canvas {
-    border: 1px solid black;
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200&display=swap');
+
+body {
+    box-sizing: border-box;
+    padding: 0;
+    background-image: url("../img/star-wars-background.jpeg");
+    background-repeat:repeat;
+    background-position: center;
+    background-size: 1000px;
+    background-repeat: repeat;
+    font-family: 'Kanit', sans-serif;
 }
 
 
 #start-game {
-    color: white;
-    font-size: 2em;
-    padding: 0.5em 1em;
-    width: fit-content;
-    margin-top: 1em
+
 }
 
 .game-section {
@@ -18,13 +25,6 @@ canvas {
     align-items: center
 }
 
-body {
-    /* background-image: url("../img/background-stars-2.jpg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100% */
-}
-
 #timer {
     font-size: 2em;
 
@@ -32,16 +32,16 @@ body {
 }
 
 .timer-text {
-    color: black;
+    color: white;
     align-self: right;
 }
 
 .btn.start {
-    background-color: red;
+    /* background-color: red; */
 }
 
 .btn.stop {
-    background-color: navy
+    /* background-color: navy */
 }
 
 
@@ -49,7 +49,8 @@ body {
     position: relative;
     background-size: 101%;
     background-position: center;
-    border: 1px solid black
+    border: 1px solid black;
+    background-color
 }
 
 .character {
@@ -59,7 +60,54 @@ body {
 
 
 .wall {
-    background-color: black;
+    background-color: white;
     position: absolute;
 }
 
+
+.hidden {
+    visibility: hidden;
+}
+
+/* RULES SECTION */
+.explanations {
+    width: 800px;
+    color: white;
+    text-align: justify;
+}
+
+
+.start-buttons button {
+    background-color:dimgray;
+    opacity: 1;
+    color: white;
+    font-size: 2em;
+    padding: 0.5em 1em;
+    width: 200px;
+}
+
+.levels button {
+    background-color:dimgray;
+    color: white;
+    font-size: 1.5em;
+    padding: 0.5em 0.5em;
+    width: 150px;
+}
+
+.levels {
+    margin: 1.5em auto
+}
+
+
+.start-settings {
+    background-color: dimgray;
+    opacity: 0.5;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-around;
+    align-items: center;
+    width: 1000px;
+    margin: auto;
+    padding: 3em
+
+}
