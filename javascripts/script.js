@@ -52,7 +52,6 @@ class Character {
     setCharacterPosition() {
         document.querySelector(".character").style.top = this.y + "%";
         document.querySelector(".character").style.left = this.x + "%";
-        console.log("setCharacterPosition works")
     }
 
     playerExits () {
@@ -227,6 +226,11 @@ function commands(character, walls) {
                         if (doesItCollide === false) 
                         { character.x += 1.5;
                             document.querySelector(".character").style.left = character.x + "%"; }  
+
+                        if (character.y < 0) {character.y = 0};
+                        if (character.y + character.h > 100) {character.y = 100 - character.h};
+                        if (character.x < 0) {character.x = 0};
+                        if (character.x + character.w > 100) {character.x = 100 - character.w}
                     }   
 
                     // RIGHT --> LEFT
@@ -239,6 +243,11 @@ function commands(character, walls) {
                         if (doesItCollide === false) {
                             character.x -= 1.5;
                             document.querySelector(".character").style.left = character.x + "%"; }
+
+                        if (character.y < 0) {character.y = 0};
+                        if (character.y + character.h > 100) {character.y = 100 - character.h};
+                        if (character.x < 0) {character.x = 0};
+                        if (character.x + character.w > 100 ) {character.x = 100 - character.w}
                     }
                 }
 
@@ -254,6 +263,11 @@ function commands(character, walls) {
                         if (doesItCollide === false) {
                             character.x -= 1.5;
                             document.querySelector(".character").style.left = character.x + "%"; }
+                        
+                            if (character.y < 0) {character.y = 0};
+                            if (character.y + character.h > 100) {character.y = 100 - character.h};
+                            if (character.x < 0) {character.x = 0};
+                            if (character.x + character.w > 100 ) {character.x = 100 - character.w}
                     }
 
                     // LEFT --> DOWN
@@ -266,6 +280,11 @@ function commands(character, walls) {
                         if(doesItCollide === false) {
                             character.y += 1.5;
                             document.querySelector(".character").style.top = character.y + "%"; }
+                        
+                            if (character.y < 0) {character.y = 0};
+                            if (character.y + character.h > 100) {character.y = 100 - character.h};
+                            if (character.x < 0) {character.x = 0};
+                            if (character.x + character.w > 100 ) {character.x = 100 - character.w}
                     }
                 }
 
@@ -281,6 +300,11 @@ function commands(character, walls) {
                         if (doesItCollide === false) {
                             character.y -= 1.5;
                             document.querySelector(".character").style.top = character.y + "%"; }
+
+                        if (character.y < 0) {character.y = 0};
+                        if (character.y + character.h > 100) {character.y = 100 - character.h};
+                        if (character.x < 0) {character.x = 0};
+                        if (character.x + character.w > 100 ) {character.x = 100 - character.w}
                     }
 
                     if(btnHard.classList.contains("selected")) {
@@ -291,7 +315,12 @@ function commands(character, walls) {
                         })
                         if (doesItCollide === false) 
                         { character.x += 1.5;
-                            document.querySelector(".character").style.left = character.x + "%"; }  
+                            document.querySelector(".character").style.left = character.x + "%"; } 
+                            
+                            if (character.y < 0) {character.y = 0};
+                            if (character.y + character.h > 100) {character.y = 100 - character.h};
+                            if (character.x < 0) {character.x = 0};
+                            if (character.x + character.w > 100 ) {character.x = 100 - character.w}
                     }
                 }
 
@@ -307,6 +336,11 @@ function commands(character, walls) {
                         if(doesItCollide === false) {
                             character.y += 1.5;
                             document.querySelector(".character").style.top = character.y + "%"; }
+
+                        if (character.y < 0) {character.y = 0};
+                        if (character.y + character.h > 100) {character.y = 100 - character.h};
+                        if (character.x < 0) {character.x = 0};
+                        if (character.x + character.w > 100 ) {character.x = 100 - character.w}
                     }
                     if(btnHard.classList.contains("selected")) {
                         let doesItCollide = false; //UP
@@ -317,6 +351,11 @@ function commands(character, walls) {
                         if (doesItCollide === false) {
                             character.y -= 1.5;
                             document.querySelector(".character").style.top = character.y + "%"; }
+                        
+                        if (character.y < 0) {character.y = 0};
+                        if (character.y + character.h > 100) {character.y = 100 - character.h};
+                        if (character.x < 0) {character.x = 0};
+                        if (character.x + character.w > 100 ) {character.x = 100 - character.w}
                     }
                 }
             }
@@ -370,6 +409,7 @@ const characterMedium = new Character (46, 0, 2, 4, "url(../img/star-wars-sprite
 const characterHard = new Character (46, 0, 2, 4, "url(../img/star-wars-sprites/vader_walking_left.jpeg)")
 
 commands(characterEasy, wallsEasy)
+
 
 
 
