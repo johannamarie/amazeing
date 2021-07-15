@@ -53,20 +53,15 @@ class Character {
     }
 
     playerExits () {
-        if (character.y > 100) {
+        if (character.y > 100 || character.x > 100) {
             winGame();
             return true
         }
     }
 }
 
-function destroyWalls(htmlWalls) {
-    for (let i = 0; i < htmlWalls.length; i++) {
-        if(!htmlWalls.item(i).classList.contains("character")) {
-            const closestParent = htmlWalls.item(i).closest("#maze-area")
-            closestParent.removeChild(htmlWalls.item(i))
-        }
-    }   
+function destroyWalls() {
+    document.querySelector(".game-section").removeChild(document.querySelector(".maze-area"))
 }
 
 
@@ -75,8 +70,8 @@ function destroyWalls(htmlWalls) {
 const btnStop = document.getElementById("btn-stop")
 const btnEasy = document.getElementById("level-easy");
 const btnMedium = document.getElementById("level-medium");
-const levelBtns = document.querySelectorAll(".levels button.level");
 const btnHard = document.getElementById("level-hard");
+const btnNewGame = document.querySelectorAll(".restart-game")
 
 // GAME AREA
 const characterDisplay = document.querySelector(".character");
@@ -100,15 +95,16 @@ let counter ;
 
 function startTimer(counterBegin) {
     counter = counterBegin
+    
     intervalId = setInterval(function () {
         counter -= 1;
-        timer.textContent = counter;
-
     if (counter === 0) {
         clearInterval(intervalId);
         loseGame()
     }
+    timer.textContent = counter;
     }, 1000)
+    
 }
 
 function clearTimer() {
@@ -116,21 +112,10 @@ function clearTimer() {
     timer.textContent = counter 
 }
 
-
-function loseGame() {
-    loseMessage.classList.remove("hidden");
-    gameArea.classList.toggle("opaque");
-    document.querySelector(".character").classList.toggle("opaque")
+function resetTimer() {
+    counter = counterBegin;
+    timer.textContent = counter;
 }
-
-function winGame() {
-    winMessage.classList.remove("hidden");
-    gameArea.classList.add("opaque");
-    characterDisplay.classList.toggle("opaque");
-    clearTimer()
-
-}
-
 
 // STOP BUTTON
 btnStop.onclick = stopGame
@@ -139,25 +124,30 @@ btnStop.onclick = stopGame
 // SELECT LEVEL
 btnEasy.onclick = function () { 
     mazeEasy.createMaze(wallsEasy);
-    startGame();
-    
+    startGame(5);
 }
 
 
 btnMedium.onclick = function () { 
     mazeMedium.createMaze(wallsMedium);
-    startGame();
-    
+    startGame(60);
 }
 
 
 btnHard.onclick = function () { 
     mazeHard.createMaze(wallsHard);
-    startGame();
-    
+    startGame(60); 
 }
 
-function startGame() { // START THE GAME
+document.querySelectorAll(".restart-game").onclick = function () {
+    console.log("newgame works")
+    // timerText.classList.add("hidden");
+    // destroyWalls();
+}
+
+
+
+function startGame(counterBegin) { // START THE GAME
     //MAKE DISAPPEAR
     btnEasy.classList.add("hidden");
     btnMedium.classList.add("hidden");
@@ -171,7 +161,7 @@ function startGame() { // START THE GAME
     
     character.createCharacter()
     character.setAttributeCharacter()
-    startTimer(60)
+    startTimer(counterBegin)
     timerText.classList.remove("hidden");
 }
   
@@ -181,11 +171,28 @@ function stopGame() {
     btnMedium.classList.remove("hidden");
     btnHard.classList.remove("hidden");
     startSettings.classList.remove("hidden")
+    btnStop.classList.add("hidden")
 
     // END GAME
     destroyWalls(gameArea.children)
     clearTimer()
-    characterDisplay.classList.add("hidden")
+    document.querySelector(".character").classList.add("hidden")
+}
+
+function loseGame() {
+    loseMessage.classList.remove("hidden");
+    document.getElementById("btn-stop").classList.add(".hidden")
+    gameArea.classList.toggle("opaque");
+    document.querySelector(".character").classList.toggle("opaque");
+    clearTimer()
+}
+
+function winGame() {
+    winMessage.classList.remove("hidden");
+    gameArea.classList.add("opaque");
+    characterDisplay.classList.toggle("opaque");
+    clearTimer()
+
 }
 
 // COMMANDS
