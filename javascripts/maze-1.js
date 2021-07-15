@@ -90,7 +90,7 @@ const wallsEasy = [
     { type: 'vertical', x: 100, y: 0, w: 0.5, h: 100, id: 89 }
 ]
 
-const exitEasy = {type: 'exit', x: 50, y: 90, w: 5, h: 10 }
+const exitEasy = {type: 'exit', x: 50, y: 99.5, h: 0.5, w: 5,  }
 
 
 const wallsMedium = [

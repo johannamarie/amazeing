@@ -216,7 +216,10 @@ function newGame() {
 function commands(character, walls) {
     document.onkeydown = function (e) {
 
-            // if(!character.playerExits()) {
+        if(arrivedAtExit (character, exitEasy)) {
+            winGame()
+        }
+            if (!arrivedAtExit (character, exitEasy)) {
                 if (e.key === "d") { // RIGHT KEY
 
                     //RIGHT --> RIGHT
@@ -338,7 +341,7 @@ function commands(character, walls) {
                         willExitMaze (character)
                     }
                 }
-            // }
+            }
     }
 }
 
@@ -360,7 +363,7 @@ function willExitMaze (character) {
 
 function arrivedAtExit (character, exit) {
     if((character.x + character.w) > exit.x && character.x < (exit.x + exit.w) && (character.y + character.h) > exit.y && character.y < (exit.y + exit.h)) {
-        console.log("player arrived at exit")
+        return true
     } else return false
 }
 
