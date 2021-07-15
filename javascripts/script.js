@@ -21,6 +21,9 @@ const startSettings = document.querySelector(".start-settings");
 const loseMessage = document.querySelector(".lose-message");
 const winMessage = document.querySelector(".win-message");
 
+// EXTRA
+const sadAudio = document.getElementById("sad-audience")
+
 
 class Maze {
     constructor(w, h) {
@@ -91,8 +94,9 @@ class Character {
 }
 
 function destroyCharacter () {
-    const div = document.querySelector(".game-section").children[1];
-    document.querySelector(".game-section").removeChild(div)
+    const i = document.querySelector(".maze-area").children.length - 1
+    const div = document.querySelector(".maze-area").children[i];
+    document.querySelector(".maze-area").removeChild(div)
 }
 
 function destroyMaze() {
@@ -135,7 +139,7 @@ btnMedium.onclick = function () {
 btnHard.onclick = function () { 
     btnHard.classList.add("selected")
     mazeHard.createMaze(wallsHard, exitHard);
-    startGame(60); 
+    startGame(5); 
     
 }
 
@@ -181,6 +185,9 @@ function loseGame() {
     btnStop.classList.add("hidden")
     gameArea.classList.add("opaque");
     document.querySelector(".character").classList.add("opaque");
+
+    // AUDIO
+
     
     // GAME
     clearTimer()
@@ -211,10 +218,8 @@ function newGame() {
     if(btnMedium.classList.contains("selected")) {btnMedium.classList.remove("selected");}
     if(btnHard.classList.contains("selected")) {btnHard.classList.remove("selected");}
     
-    
-
     // GAME
-    character.destroyCharacter
+    destroyCharacter()
     destroyMaze(gameArea.children)
     clearTimer()
 }
