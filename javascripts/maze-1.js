@@ -90,6 +90,8 @@ const wallsEasy = [
     { type: 'vertical', x: 100, y: 0, w: 0.5, h: 100, id: 89 }
 ]
 
+const exitEasy = {type: 'exit', x: 50, y: 90, w: 5, h: 10 }
+
 
 const wallsMedium = [
     { type: 'horizontal', x: 0, y: 0, w: 45, h: 1, id: 1 },
@@ -183,6 +185,8 @@ const wallsMedium = [
     { type: 'vertical', x: 100, y: 0, w: 0.5, h: 100, id: 89 }
 ]
 
+const exitMedium = {type: 'exit', x: 50, y: 90, w: 5, h: 10 }
+
 const wallsHard = [
     { type: 'horizontal', x: 0, y: 0, w: 45, h: 1, id: 1 },
     { type: 'horizontal', x: 50, y: 0, w: 50, h: 1, id: 2 },
@@ -275,6 +279,7 @@ const wallsHard = [
     { type: 'vertical', x: 100, y: 0, w: 0.5, h: 100, id: 89 }
 ]
 
+const exitHard = {type: 'exit', x: 50, y: 95, h: 10, w: 5,  }
 
 function addIdWall (array) {
     for (let i = 0; i < array.length; i++) {

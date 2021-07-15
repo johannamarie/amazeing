@@ -24,9 +24,20 @@ class Maze {
         })
     }
 
-    createMaze(arrayWalls) {
+    setExit(exit) {
+            const newExit = document.createElement("div");
+            newExit.className = 'exit';
+            document.querySelector(".maze-area").appendChild(newExit);
+            newExit.style.top = `${exit.y}%`;
+            newExit.style.left = `${exit.x}%`;
+            newExit.style.width = `${exit.w}%`;
+            newExit.style.height = `${exit.h}%`;
+    }
+
+    createMaze(arrayWalls, exit) {
         this.createMazeArea();
         this.buildWalls(arrayWalls)
+        this.setExit(exit)
     }
     
 }
@@ -52,13 +63,6 @@ class Character {
     setCharacterPosition() {
         document.querySelector(".character").style.top = this.y + "%";
         document.querySelector(".character").style.left = this.x + "%";
-    }
-
-    playerExits () {
-        if (this.y > 100 || this.x > 100) {
-            winGame();
-            return true
-        }
     }
 
     placeCharacter () {
@@ -104,21 +108,21 @@ btnStop.onclick = stopGame
 // SELECT LEVEL
 btnEasy.onclick = function () { 
     btnEasy.classList.add("selected")
-    mazeEasy.createMaze(wallsEasy);
+    mazeEasy.createMaze(wallsEasy, exitEasy);
     startGame(20);
     
 }
 
 btnMedium.onclick = function () { 
     btnMedium.classList.add("selected")
-    mazeMedium.createMaze(wallsMedium);
+    mazeMedium.createMaze(wallsMedium, exitMedium);
     startGame(60);
     
 }
 
 btnHard.onclick = function () { 
     btnHard.classList.add("selected")
-    mazeHard.createMaze(wallsHard);
+    mazeHard.createMaze(wallsHard, exitHard);
     startGame(60); 
     
 }
@@ -211,43 +215,36 @@ function newGame() {
 
 function commands(character, walls) {
     document.onkeydown = function (e) {
-        character.playerExits()
 
-            if(!character.playerExits()) {
+            // if(!character.playerExits()) {
                 if (e.key === "d") { // RIGHT KEY
 
                     //RIGHT --> RIGHT
                     if(!btnHard.classList.contains("selected")) {
                         let doesItCollide = false; 
                         walls.forEach(wall => {
-                            if(isCollidingWall({...character, x: character.x + 1.5}, wall)) 
+                            if(willEncounterWall({...character, x: character.x + 1.5}, wall)) 
                             { doesItCollide = true; }
                         })
                         if (doesItCollide === false) 
                         { character.x += 1.5;
                             document.querySelector(".character").style.left = character.x + "%"; }  
 
-                        if (character.y < 0) {character.y = 0};
-                        if (character.y + character.h > 100) {character.y = 100 - character.h};
-                        if (character.x < 0) {character.x = 0};
-                        if (character.x + character.w > 100) {character.x = 100 - character.w}
+                        willExitMaze (character)
                     }   
 
                     // RIGHT --> LEFT
                     if(btnHard.classList.contains("selected")) {
                         let doesItCollide = false; 
                         walls.forEach(wall => {
-                            if(isCollidingWall({...character, x: character.x - 1.5}, wall)) {
+                            if(willEncounterWall({...character, x: character.x - 1.5}, wall)) {
                                 doesItCollide = true; }
                         })
                         if (doesItCollide === false) {
                             character.x -= 1.5;
                             document.querySelector(".character").style.left = character.x + "%"; }
 
-                        if (character.y < 0) {character.y = 0};
-                        if (character.y + character.h > 100) {character.y = 100 - character.h};
-                        if (character.x < 0) {character.x = 0};
-                        if (character.x + character.w > 100 ) {character.x = 100 - character.w}
+                        willExitMaze (character)
                     }
                 }
 
@@ -257,34 +254,28 @@ function commands(character, walls) {
                     if(!btnHard.classList.contains("selected")) {
                         let doesItCollide = false; 
                         walls.forEach(wall => {
-                            if(isCollidingWall({...character,x: character.x - 1.5}, wall)) {
+                            if(willEncounterWall({...character,x: character.x - 1.5}, wall)) {
                                 doesItCollide = true; }
                         })
                         if (doesItCollide === false) {
                             character.x -= 1.5;
                             document.querySelector(".character").style.left = character.x + "%"; }
                         
-                            if (character.y < 0) {character.y = 0};
-                            if (character.y + character.h > 100) {character.y = 100 - character.h};
-                            if (character.x < 0) {character.x = 0};
-                            if (character.x + character.w > 100 ) {character.x = 100 - character.w}
+                        willExitMaze (character)
                     }
 
                     // LEFT --> DOWN
                     if(btnHard.classList.contains("selected")) {
                         let doesItCollide = false; // 
                         walls.forEach(wall => {
-                            if(isCollidingWall({...character,y: character.y + 1.5}, wall)) {
+                            if(willEncounterWall({...character,y: character.y + 1.5}, wall)) {
                                 doesItCollide = true }      
                         })
                         if(doesItCollide === false) {
                             character.y += 1.5;
                             document.querySelector(".character").style.top = character.y + "%"; }
                         
-                            if (character.y < 0) {character.y = 0};
-                            if (character.y + character.h > 100) {character.y = 100 - character.h};
-                            if (character.x < 0) {character.x = 0};
-                            if (character.x + character.w > 100 ) {character.x = 100 - character.w}
+                        willExitMaze (character)
                     }
                 }
 
@@ -294,33 +285,28 @@ function commands(character, walls) {
                     if(!btnHard.classList.contains("selected")) {
                         let doesItCollide = false; //UP
                         walls.forEach(wall => {
-                            if(isCollidingWall({...character,y: character.y - 1.5}, wall)) {
+                            if(willEncounterWall({...character,y: character.y - 1.5}, wall)) {
                                 doesItCollide = true } 
                         })
                         if (doesItCollide === false) {
                             character.y -= 1.5;
                             document.querySelector(".character").style.top = character.y + "%"; }
 
-                        if (character.y < 0) {character.y = 0};
-                        if (character.y + character.h > 100) {character.y = 100 - character.h};
-                        if (character.x < 0) {character.x = 0};
-                        if (character.x + character.w > 100 ) {character.x = 100 - character.w}
+                            willExitMaze (character)
+                        
                     }
 
                     if(btnHard.classList.contains("selected")) {
                         let doesItCollide = false; // GO RIGHT
                         walls.forEach(wall => {
-                            if(isCollidingWall({...character,x: character.x + 1.5}, wall)) 
+                            if(willEncounterWall({...character,x: character.x + 1.5}, wall)) 
                             { doesItCollide = true; }
                         })
                         if (doesItCollide === false) 
                         { character.x += 1.5;
                             document.querySelector(".character").style.left = character.x + "%"; } 
                             
-                            if (character.y < 0) {character.y = 0};
-                            if (character.y + character.h > 100) {character.y = 100 - character.h};
-                            if (character.x < 0) {character.x = 0};
-                            if (character.x + character.w > 100 ) {character.x = 100 - character.w}
+                        willExitMaze (character)
                     }
                 }
 
@@ -330,46 +316,54 @@ function commands(character, walls) {
                     if(!btnHard.classList.contains("selected")) {
                         let doesItCollide = false; // DOWN
                         walls.forEach(wall => {
-                            if(isCollidingWall({...character,y: character.y + 1.5}, wall)) {
+                            if(willEncounterWall({...character,y: character.y + 1.5}, wall)) {
                                 doesItCollide = true }      
                         })
                         if(doesItCollide === false) {
                             character.y += 1.5;
                             document.querySelector(".character").style.top = character.y + "%"; }
 
-                        if (character.y < 0) {character.y = 0};
-                        if (character.y + character.h > 100) {character.y = 100 - character.h};
-                        if (character.x < 0) {character.x = 0};
-                        if (character.x + character.w > 100 ) {character.x = 100 - character.w}
+                        willExitMaze (character)
                     }
                     if(btnHard.classList.contains("selected")) {
                         let doesItCollide = false; //UP
                         walls.forEach(wall => {
-                            if(isCollidingWall({...character,y: character.y - 1.5}, wall)) {
+                            if(willEncounterWall({...character,y: character.y - 1.5}, wall)) {
                                 doesItCollide = true } 
                         })
                         if (doesItCollide === false) {
                             character.y -= 1.5;
                             document.querySelector(".character").style.top = character.y + "%"; }
                         
-                        if (character.y < 0) {character.y = 0};
-                        if (character.y + character.h > 100) {character.y = 100 - character.h};
-                        if (character.x < 0) {character.x = 0};
-                        if (character.x + character.w > 100 ) {character.x = 100 - character.w}
+                        willExitMaze (character)
                     }
                 }
-            }
+            // }
     }
 }
 
 
 
 
-function isCollidingWall (character, wall) {
+function willEncounterWall (character, wall) {
     if((character.x + character.w) > wall.x && character.x < (wall.x + wall.w) && (character.y + character.h) > wall.y && character.y < (wall.y + wall.h)) {
         return true
     } else return false
 }
+
+function willExitMaze (character) {
+    if (character.y < 0) {character.y = 0};
+    if (character.y + character.h > 100) {character.y = 100 - character.h};
+    if (character.x < 0) {character.x = 0};
+    if (character.x + character.w > 100 ) {character.x = 100 - character.w}
+}
+
+function arrivedAtExit (character, exit) {
+    if((character.x + character.w) > exit.x && character.x < (exit.x + exit.w) && (character.y + character.h) > exit.y && character.y < (exit.y + exit.h)) {
+        console.log("player arrived at exit")
+    } else return false
+}
+
 
 
 // TIMER
@@ -404,11 +398,13 @@ function resetTimer() {
 const mazeEasy = new Maze(1000, 500)
 const mazeMedium = new Maze(1000, 500)
 const mazeHard = new Maze(1000, 500)
-const characterEasy = new Character (46, 0, 2, 4, "url(../img/star-wars-sprites/luke_walking_left.png)")
+const characterEasy = new Character (46, 92, 2, 4, "url(../img/star-wars-sprites/luke_walking_left.png)")
 const characterMedium = new Character (46, 0, 2, 4, "url(../img/star-wars-sprites/clone_walking_right.jpeg)")
 const characterHard = new Character (46, 0, 2, 4, "url(../img/star-wars-sprites/vader_walking_left.jpeg)")
 
 commands(characterEasy, wallsEasy)
+
+
 
 
 

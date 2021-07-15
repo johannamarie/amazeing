@@ -141,3 +141,8 @@ h2, h1 {
 .choose-level {
     font-weight: bold
 }
+
+.exit {
+    opacity: 1;
+    position: absolute;
+}
