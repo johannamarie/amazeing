@@ -71,11 +71,9 @@ p {
 /* BUTTONS */ 
 
 .button {
-    overflow: hidden;
     color: rgba(105, 105, 105, 0.283);
     background-color: rgba(0, 0, 0, 0);
     font-size: 2em;
-    padding: 0.5em 1em;
     width: 200px;
     border: none;
     margin: 0 auto;
@@ -131,7 +129,7 @@ p {
 }
 
 .end-message h3 {
-    font-size: 3em;
+    font-size: 2em;
     text-align: center;
     text-transform: uppercase;
     margin: 0

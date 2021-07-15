@@ -1,3 +1,27 @@
+// BUTTONS
+const btnStop = document.getElementById("btn-stop")
+const btnEasy = document.getElementById("level-easy");
+const btnMedium = document.getElementById("level-medium");
+const btnHard = document.getElementById("level-hard");
+const btnNewGameWin = document.getElementById("restart-game-win")
+const btnNewGameLose = document.getElementById("restart-game-lose")
+
+// GAME AREA
+const characterDisplay = document.querySelector(".character");
+const mazeArea = document.querySelector(".maze-area")
+const gameArea = document.querySelector(".game-section");
+const wallDisplay = document.querySelectorAll(".wall");
+const timerDisplay = document.getElementById("timer");
+
+// TEXT
+const btnRules = document.getElementById("rules");
+const rulesText = document.getElementById("rules-section");
+const timerText = document.querySelector(".timer-text");
+const startSettings = document.querySelector(".start-settings");
+const loseMessage = document.querySelector(".lose-message");
+const winMessage = document.querySelector(".win-message");
+
+
 class Maze {
     constructor(w, h) {
         this.w = w;
@@ -64,11 +88,11 @@ class Character {
         document.querySelector(".character").style.top = this.y + "%";
         document.querySelector(".character").style.left = this.x + "%";
     }
+}
 
-    placeCharacter () {
-        this.createCharacter();
-        this.setCharacterPosition();
-    }
+function destroyCharacter () {
+    const div = document.querySelector(".game-section").children[1];
+    document.querySelector(".game-section").removeChild(div)
 }
 
 function destroyMaze() {
@@ -76,29 +100,17 @@ function destroyMaze() {
     document.querySelector(".game-section").removeChild(div)
 }
 
-// BUTTONS
-// const btnStart = document.getElementById("start-game");
-const btnStop = document.getElementById("btn-stop")
-const btnEasy = document.getElementById("level-easy");
-const btnMedium = document.getElementById("level-medium");
-const btnHard = document.getElementById("level-hard");
-const btnNewGameWin = document.getElementById("restart-game-win")
-const btnNewGameLose = document.getElementById("restart-game-lose")
 
-// GAME AREA
-const characterDisplay = document.querySelector(".character");
-const mazeArea = document.querySelector(".maze-area")
-const gameArea = document.querySelector(".game-section");
-const wallDisplay = document.querySelectorAll(".wall");
-const timerDisplay = document.getElementById("timer");
+const mazeEasy = new Maze(1200, 1200/2)
+const mazeMedium = new Maze(1000, 500)
+const mazeHard = new Maze(1000, 500)
+const characterEasy = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
+const characterMedium = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
+const characterHard = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
 
-// TEXT
-const btnRules = document.getElementById("rules");
-const rulesText = document.getElementById("rules-section");
-const timerText = document.querySelector(".timer-text");
-const startSettings = document.querySelector(".start-settings");
-const loseMessage = document.querySelector(".lose-message");
-const winMessage = document.querySelector(".win-message");
+commands(characterEasy, wallsEasy)
+
+
 
 
 // STOP BUTTON
@@ -109,7 +121,7 @@ btnStop.onclick = stopGame
 btnEasy.onclick = function () { 
     btnEasy.classList.add("selected")
     mazeEasy.createMaze(wallsEasy, exitEasy);
-    startGame(5);
+    startGame(60);
     
 }
 
@@ -139,13 +151,12 @@ function startGame(counterBegin) { // START THE GAME
     btnStop.classList.remove("hidden");
 
     // SET GAME
-    if(btnEasy.classList.contains("selected")) { characterEasy.placeCharacter() }
-    if(btnMedium.classList.contains("selected")) { characterMedium.placeCharacter() }
-    if(btnHard.classList.contains("selected")) { characterHard.placeCharacter() }
+    if(btnEasy.classList.contains("selected")) { characterEasy.createCharacter(); characterEasy.setCharacterPosition() }
+    if(btnMedium.classList.contains("selected")) { characterMedium.createCharacter(); characterMedium.setCharacterPosition() }
+    if(btnHard.classList.contains("selected")) { characterHard.createCharacter(); characterHard.setCharacterPosition() }
     startTimer(counterBegin)
     timerText.classList.remove("hidden");
 }
-
   
 function stopGame() {
     // MAKE APPEAR
@@ -193,6 +204,7 @@ function newGame() {
     if(!document.querySelector(".win-message").classList.contains("hidden")) { winMessage.classList.add("hidden"); }
     startSettings.classList.remove("hidden");
     gameArea.classList.remove("opaque");
+    timerText.classList.add("hidden")
 
     // RESET LEVEL
     if(btnEasy.classList.contains("selected")) {btnEasy.classList.remove("selected");}
@@ -202,6 +214,7 @@ function newGame() {
     
 
     // GAME
+    character.destroyCharacter
     destroyMaze(gameArea.children)
     clearTimer()
 }
@@ -400,14 +413,7 @@ function resetTimer() {
 
 
 
-const mazeEasy = new Maze(1200, 1200/2)
-const mazeMedium = new Maze(1000, 500)
-const mazeHard = new Maze(1000, 500)
-const characterEasy = new Character (46, 92, 2, 4, "url(../img/dino-right.png)")
-const characterMedium = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
-const characterHard = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
 
-commands(characterEasy, wallsEasy)
 
 
 

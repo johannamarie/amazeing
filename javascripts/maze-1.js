@@ -87,7 +87,7 @@ const wallsEasy = [
     { type: 'vertical', x: 90, y: 30, w: 0.5, h: 10, id: 86 },
     { type: 'vertical', x: 90, y: 70, w: 0.5, h: 30, id: 87 },
     { type: 'vertical', x: 95, y: 60, w: 0.5, h: 30, id: 88 },
-    { type: 'vertical', x: 100, y: 0, w: 0.5, h: 100, id: 89 }
+    { type: 'vertical', x: 100, y: 0, w: 0.5, h: 101, id: 89 }
 ]
 
 const exitEasy = {type: 'exit', x: 50, y: 99.5, h: 0.5, w: 5,  }
@@ -182,7 +182,7 @@ const wallsMedium = [
     { type: 'vertical', x: 90, y: 30, w: 0.5, h: 10, id: 86 },
     { type: 'vertical', x: 90, y: 70, w: 0.5, h: 30, id: 87 },
     { type: 'vertical', x: 95, y: 60, w: 0.5, h: 30, id: 88 },
-    { type: 'vertical', x: 100, y: 0, w: 0.5, h: 100, id: 89 }
+    { type: 'vertical', x: 100, y: 0, w: 0.5, h: 101, id: 89 }
 ]
 
 const exitMedium = {type: 'exit', x: 50, y: 90, w: 5, h: 10 }
@@ -276,7 +276,7 @@ const wallsHard = [
     { type: 'vertical', x: 90, y: 30, w: 0.5, h: 10, id: 86 },
     { type: 'vertical', x: 90, y: 70, w: 0.5, h: 30, id: 87 },
     { type: 'vertical', x: 95, y: 60, w: 0.5, h: 30, id: 88 },
-    { type: 'vertical', x: 100, y: 0, w: 0.5, h: 100, id: 89 }
+    { type: 'vertical', x: 100, y: 0, w: 0.5, h: 101, id: 89 }
 ]
 
 const exitHard = {type: 'exit', x: 50, y: 95, h: 10, w: 5,  }
