@@ -97,8 +97,8 @@ const btnRules = document.getElementById("rules");
 const rulesText = document.getElementById("rules-section");
 const timerText = document.querySelector(".timer-text");
 const startSettings = document.querySelector(".start-settings");
-const loseMessage = document.querySelector(".lose-game");
-const winMessage = document.querySelector(".win-game")
+const loseMessage = document.querySelector(".lose-message");
+const winMessage = document.querySelector(".win-message");
 
 
 // STOP BUTTON
@@ -109,7 +109,7 @@ btnStop.onclick = stopGame
 btnEasy.onclick = function () { 
     btnEasy.classList.add("selected")
     mazeEasy.createMaze(wallsEasy, exitEasy);
-    startGame(100);
+    startGame(5);
     
 }
 
@@ -180,7 +180,7 @@ function winGame() {
     // DISPLAY
     winMessage.classList.remove("hidden");
     btnStop.classList.add("hidden")
-    gameArea.classList.toggle("opaque");
+    gameArea.classList.add("opaque");
     document.querySelector(".character").classList.add("opaque");
     
     // GAME
@@ -190,7 +190,7 @@ function winGame() {
 function newGame() {
     // DISPLAYED ELEMENTS
     if(!loseMessage.classList.contains("hidden")) { loseMessage.classList.add("hidden"); }
-    if(!winMessage.classList.contains("hidden")) { winMessage.classList.add("hidden"); }
+    if(!document.querySelector(".win-message").classList.contains("hidden")) { winMessage.classList.add("hidden"); }
     startSettings.classList.remove("hidden");
     gameArea.classList.remove("opaque");
 
@@ -243,9 +243,10 @@ function commands(character, walls) {
                     if (doesItCollide === false) {
                         character.x -= 1.5;
                         document.querySelector(".character").style.left = character.x + "%"; }
-
                     willExitMaze(character)
                 }
+
+                document.querySelector(".character").style.backgroundImage = "url(../img/dino-right.png)"
             }
 
             if (e.key === "q") { //LEFT
@@ -277,6 +278,8 @@ function commands(character, walls) {
                     
                     willExitMaze(character)
                 }
+
+                document.querySelector(".character").style.backgroundImage = "url(../img/dino-left.png)"
             }
 
             if (e.key === "z") { 
@@ -395,12 +398,14 @@ function resetTimer() {
 }
 
 
-const mazeEasy = new Maze(1000, 500)
+
+
+const mazeEasy = new Maze(1200, 1200/2)
 const mazeMedium = new Maze(1000, 500)
 const mazeHard = new Maze(1000, 500)
-const characterEasy = new Character (46, 92, 2, 4, "url(../img/star-wars-sprites/luke_walking_left.png)")
-const characterMedium = new Character (46, 0, 2, 4, "url(../img/star-wars-sprites/clone_walking_right.jpeg)")
-const characterHard = new Character (46, 0, 2, 4, "url(../img/star-wars-sprites/vader_walking_left.jpeg)")
+const characterEasy = new Character (46, 92, 2, 4, "url(../img/dino-right.png)")
+const characterMedium = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
+const characterHard = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
 
 commands(characterEasy, wallsEasy)
 

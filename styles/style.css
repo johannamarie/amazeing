@@ -5,15 +5,12 @@
 body {
     box-sizing: border-box;
     padding: 0;
-    background-image: url("../img/star-wars-background.jpeg");
-    background-repeat:repeat;
-    background-position: center;
-    background-size: 1000px;
-    background-repeat: repeat;
+    background-color: white;
     font-family: 'Kanit', sans-serif;
     display: flex; 
     flex-direction: column;
-    align-items: center
+    align-items: center;
+    font-size: 20px
 }
 
 .game-section {
@@ -22,15 +19,16 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
-    height: fit-content
+    height: fit-content;
 }
 
 #timer {
     font-size: 2em;
+    color: black
 }
 
 .timer-text {
-    color: white;
+    color: black;
     align-self: right;
 }
 
@@ -40,18 +38,17 @@ body {
     background-size: 101%;
     background-position: center;
     border: 1px solid white;
-
-
 }
 
 .character {
     position: absolute;
     background-size: 100%;
+
 }
 
 
 .wall {
-    background-color: white;
+    background-color: dimgray;
     position: absolute;
 }
 
@@ -61,26 +58,39 @@ body {
 }
 
 /* RULES SECTION */
-.explanations {
+#rules-section {
     width: 800px;
-    color: white;
+    color: dimgray;
     text-align: justify;
 }
 
+p {
+    text-align:center;
+}
+
+/* BUTTONS */ 
 
 .button {
-    background-color:dimgray;
-    opacity: 1;
-    color: white;
+    overflow: hidden;
+    color: rgba(105, 105, 105, 0.283);
+    background-color: rgba(0, 0, 0, 0);
     font-size: 2em;
     padding: 0.5em 1em;
     width: 200px;
+    border: none;
+    margin: 0 auto;
 }
+
 
 
 .levels {
-    margin: 1.5em auto
+    margin: 1.5em auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items:flex-start
 }
+
 
 .start-settings {
     background-color: rgba(198, 198, 198, 0.2);
@@ -92,8 +102,7 @@ body {
     width: 1000px;
     margin: auto 0;
     padding: 3em;
-    
-    top: 20%
+    top: 20%;
 }
 
 
@@ -101,36 +110,31 @@ body {
     font-weight: bold;
 }
 
-.lose-game {
-    background-color: rgba(198, 198, 198, 0.5);
+
+.end-game-message h3 {
+    font-size: 2em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.end-message {
+    background-color: rgba(198, 198, 198, 0.8);
     color: white;
     margin: 0 auto;
     top: 20%;
     height: 300px;
     width: 1000px;
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.lose-game h3 {
+.end-message h3 {
     font-size: 3em;
     text-align: center;
     text-transform: uppercase;
-}
-
-.win-game {
-    background-color: rgba(198, 198, 198, 0.5);
-    color: white;
-    margin: 0 auto;
-    top: 20%;
-    height: 300px;
-    width: 1000px;
-    position: absolute;
-}
-
-.win-game h3{
-    font-size: 3em;
-    text-align: center;
-    text-transform: uppercase;
+    margin: 0
 }
 
 .opaque {
@@ -148,4 +152,13 @@ h2, h1 {
 .exit {
     opacity: 1;
     position: absolute;
+}
+
+#timer.alert {
+    color:white;
+    font-weight: bold;
+}
+
+.btn-stop {
+    margin: 3em auto
 }
