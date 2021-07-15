@@ -57,7 +57,7 @@ class Character {
     }
 
     playerExits () {
-        if (character.y > 100 || character.x > 100) {
+        if (this.y > 100 || this.x > 100) {
             winGame();
             return true
         }
@@ -65,7 +65,8 @@ class Character {
 }
 
 function destroyMaze() {
-    document.querySelector(".game-section").removeChild(document.querySelector(".maze-area"))
+    const div = document.querySelector(".game-section").children[0]
+    document.querySelector(".game-section").removeChild(div)
 }
 
 // BUTTONS
@@ -99,26 +100,26 @@ btnStop.onclick = stopGame
 
 // SELECT LEVEL
 btnEasy.onclick = function () { 
+    btnEasy.classList.add("selected")
     mazeEasy.createMaze(wallsEasy);
     startGame(5);
+    
 }
 
 
 btnMedium.onclick = function () { 
+    btnMedium.classList.add("selected")
     mazeMedium.createMaze(wallsMedium);
     startGame(60);
+    
 }
 
 
 btnHard.onclick = function () { 
+    btnHard.classList.add("selected")
     mazeHard.createMaze(wallsHard);
     startGame(60); 
-}
-
-document.querySelectorAll(".restart-game").onclick = function () {
-    console.log("newgame works");
-    // timerText.classList.add("hidden");
-    // destroyMaze();
+    
 }
 
 btnNewGameLose.onclick = newGame
@@ -136,8 +137,9 @@ function startGame(counterBegin) { // START THE GAME
     btnStop.classList.remove("hidden");
 
     // SET GAME
-    character.createCharacter()
-    character.setAttributeCharacter()
+    if(btnEasy.classList.contains("selected")) { characterEasy.createCharacter() }
+    if(btnMedium.classList.contains("selected")) { characterMedium.createCharacter() }
+    if(btnHard.classList.contains("selected")) { characterHard.createCharacter() }
     startTimer(counterBegin)
     timerText.classList.remove("hidden");
 }
@@ -151,6 +153,7 @@ function stopGame() {
     btnHard.classList.remove("hidden");
     startSettings.classList.remove("hidden")
     btnStop.classList.add("hidden")
+    timerText.classList.add("hidden")
 
     // END GAME
     destroyMaze(gameArea.children)
@@ -182,9 +185,14 @@ function winGame() {
 
 function newGame() {
     // DISPLAYED ELEMENTS
-    loseMessage.classList.add("hidden");
+    if(!loseMessage.classList.contains("hidden")) { loseMessage.classList.add("hidden"); }
+    if(!winMessage.classList.contains("hidden")) { winMessage.classList.add("hidden"); }
     startSettings.classList.remove("hidden");
     gameArea.classList.remove("opaque");
+    btnEasy.classList.toggle("selected");
+    btnMedium.classList.toggle("selected");
+    btnHard.classList.toggle("selected")
+    
 
     // GAME
     destroyMaze(gameArea.children)
@@ -193,9 +201,9 @@ function newGame() {
 
 
 
-// COMMANDS
+// COMMANDS EASY
 
-function commands(walls) {
+function commands(character, walls) {
     document.onkeydown = function (e) {
         character.playerExits()
 
@@ -290,9 +298,11 @@ function resetTimer() {
 const mazeEasy = new Maze(1000, 500)
 const mazeMedium = new Maze(1000, 500)
 const mazeHard = new Maze(1000, 500)
-const character = new Character (46, 0, 2, 4)
+const characterEasy = new Character (46, 0, 2, 4)
+const characterMedium = new Character (46, 0, 2, 4)
+const characterHard = new Character (46, 0, 2, 4)
 
-commands(wallsEasy)
+commands(characterEasy, wallsEasy)
 
 
 

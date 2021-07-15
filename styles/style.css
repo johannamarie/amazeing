@@ -17,7 +17,9 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center
+    align-items: center;
+    position: absolute;
+    height: fit-content
 }
 
 #timer {
@@ -35,6 +37,7 @@ body {
     background-size: 101%;
     background-position: center;
     border: 1px solid white;
+
 
 }
 
