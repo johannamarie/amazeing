@@ -7,9 +7,9 @@ class Maze {
     createMazeArea() {
         const newMaze = document.createElement("div");
         newMaze.className = "maze-area";
-        document.querySelector(".game-section").insertBefore(newMaze, document.getElementById("btn-stop"))
-        newMaze.style.width = this.w + "px";
-        newMaze.style.height = this.h + "px";
+        document.querySelector(".game-section").appendChild(newMaze, document.getElementById("btn-stop"))
+        document.querySelector(".game-section").style.width = this.w + "px";
+        document.querySelector(".game-section").style.height = this.h + "px";
     }
 
     buildWalls(arrayWalls) {
@@ -109,7 +109,7 @@ btnStop.onclick = stopGame
 btnEasy.onclick = function () { 
     btnEasy.classList.add("selected")
     mazeEasy.createMaze(wallsEasy, exitEasy);
-    startGame(20);
+    startGame(100);
     
 }
 
@@ -133,9 +133,6 @@ btnNewGameWin.onclick = newGame
 
 function startGame(counterBegin) { // START THE GAME
     //MAKE DISAPPEAR
-    // btnEasy.classList.add("hidden");
-    // btnMedium.classList.add("hidden");
-    // btnHard.classList.add("hidden");
     startSettings.classList.add("hidden");
     
     // MAKE BTN STOP
@@ -219,129 +216,129 @@ function commands(character, walls) {
         if(arrivedAtExit (character, exitEasy)) {
             winGame()
         }
-            if (!arrivedAtExit (character, exitEasy)) {
-                if (e.key === "d") { // RIGHT KEY
+        if (!arrivedAtExit (character, exitEasy)) {
+            if (e.key === "d") { // RIGHT KEY
 
-                    //RIGHT --> RIGHT
-                    if(!btnHard.classList.contains("selected")) {
-                        let doesItCollide = false; 
-                        walls.forEach(wall => {
-                            if(willEncounterWall({...character, x: character.x + 1.5}, wall)) 
-                            { doesItCollide = true; }
-                        })
-                        if (doesItCollide === false) 
-                        { character.x += 1.5;
-                            document.querySelector(".character").style.left = character.x + "%"; }  
+                //RIGHT --> RIGHT
+                if(!btnHard.classList.contains("selected")) {
+                    let doesItCollide = false; 
+                    walls.forEach(wall => {
+                        if(willEncounterWall({...character, x: character.x + 1.5}, wall)) 
+                        { doesItCollide = true; }
+                    })
+                    if (doesItCollide === false) 
+                    { character.x += 1.5;
+                        document.querySelector(".character").style.left = character.x + "%"; }  
 
-                        willExitMaze (character)
-                    }   
+                    willExitMaze(character)
+                }   
 
-                    // RIGHT --> LEFT
-                    if(btnHard.classList.contains("selected")) {
-                        let doesItCollide = false; 
-                        walls.forEach(wall => {
-                            if(willEncounterWall({...character, x: character.x - 1.5}, wall)) {
-                                doesItCollide = true; }
-                        })
-                        if (doesItCollide === false) {
-                            character.x -= 1.5;
-                            document.querySelector(".character").style.left = character.x + "%"; }
+                // RIGHT --> LEFT
+                if(btnHard.classList.contains("selected")) {
+                    let doesItCollide = false; 
+                    walls.forEach(wall => {
+                        if(willEncounterWall({...character, x: character.x - 1.5}, wall)) {
+                            doesItCollide = true; }
+                    })
+                    if (doesItCollide === false) {
+                        character.x -= 1.5;
+                        document.querySelector(".character").style.left = character.x + "%"; }
 
-                        willExitMaze (character)
-                    }
-                }
-
-                if (e.key === "q") { //LEFT
-
-                    // LEFT --> LEFT
-                    if(!btnHard.classList.contains("selected")) {
-                        let doesItCollide = false; 
-                        walls.forEach(wall => {
-                            if(willEncounterWall({...character,x: character.x - 1.5}, wall)) {
-                                doesItCollide = true; }
-                        })
-                        if (doesItCollide === false) {
-                            character.x -= 1.5;
-                            document.querySelector(".character").style.left = character.x + "%"; }
-                        
-                        willExitMaze (character)
-                    }
-
-                    // LEFT --> DOWN
-                    if(btnHard.classList.contains("selected")) {
-                        let doesItCollide = false; // 
-                        walls.forEach(wall => {
-                            if(willEncounterWall({...character,y: character.y + 1.5}, wall)) {
-                                doesItCollide = true }      
-                        })
-                        if(doesItCollide === false) {
-                            character.y += 1.5;
-                            document.querySelector(".character").style.top = character.y + "%"; }
-                        
-                        willExitMaze (character)
-                    }
-                }
-
-                if (e.key === "z") { 
-
-                    // UP --> UP
-                    if(!btnHard.classList.contains("selected")) {
-                        let doesItCollide = false; //UP
-                        walls.forEach(wall => {
-                            if(willEncounterWall({...character,y: character.y - 1.5}, wall)) {
-                                doesItCollide = true } 
-                        })
-                        if (doesItCollide === false) {
-                            character.y -= 1.5;
-                            document.querySelector(".character").style.top = character.y + "%"; }
-
-                            willExitMaze (character)
-                        
-                    }
-
-                    if(btnHard.classList.contains("selected")) {
-                        let doesItCollide = false; // GO RIGHT
-                        walls.forEach(wall => {
-                            if(willEncounterWall({...character,x: character.x + 1.5}, wall)) 
-                            { doesItCollide = true; }
-                        })
-                        if (doesItCollide === false) 
-                        { character.x += 1.5;
-                            document.querySelector(".character").style.left = character.x + "%"; } 
-                            
-                        willExitMaze (character)
-                    }
-                }
-
-                if (e.key === "s") { //DOWN
-
-                    // DOWN --> DOWN
-                    if(!btnHard.classList.contains("selected")) {
-                        let doesItCollide = false; // DOWN
-                        walls.forEach(wall => {
-                            if(willEncounterWall({...character,y: character.y + 1.5}, wall)) {
-                                doesItCollide = true }      
-                        })
-                        if(doesItCollide === false) {
-                            character.y += 1.5;
-                            document.querySelector(".character").style.top = character.y + "%"; }
-
-                        willExitMaze (character)
-                    }
-                    if(btnHard.classList.contains("selected")) {
-                        let doesItCollide = false; //UP
-                        walls.forEach(wall => {
-                            if(willEncounterWall({...character,y: character.y - 1.5}, wall)) {
-                                doesItCollide = true } 
-                        })
-                        if (doesItCollide === false) {
-                            character.y -= 1.5;
-                            document.querySelector(".character").style.top = character.y + "%"; }
-                        
-                        willExitMaze (character)
-                    }
+                    willExitMaze(character)
                 }
             }
+
+            if (e.key === "q") { //LEFT
+
+                // LEFT --> LEFT
+                if(!btnHard.classList.contains("selected")) {
+                    let doesItCollide = false; 
+                    walls.forEach(wall => {
+                        if(willEncounterWall({...character,x: character.x - 1.5}, wall)) {
+                            doesItCollide = true; }
+                    })
+                    if (doesItCollide === false) {
+                        character.x -= 1.5;
+                        document.querySelector(".character").style.left = character.x + "%"; }
+                    
+                    willExitMaze(character)
+                }
+
+                // LEFT --> DOWN
+                if(btnHard.classList.contains("selected")) {
+                    let doesItCollide = false; // 
+                    walls.forEach(wall => {
+                        if(willEncounterWall({...character,y: character.y + 1.5}, wall)) {
+                            doesItCollide = true }      
+                    })
+                    if(doesItCollide === false) {
+                        character.y += 1.5;
+                        document.querySelector(".character").style.top = character.y + "%"; }
+                    
+                    willExitMaze(character)
+                }
+            }
+
+            if (e.key === "z") { 
+
+                // UP --> UP
+                if(!btnHard.classList.contains("selected")) {
+                    let doesItCollide = false; //UP
+                    walls.forEach(wall => {
+                        if(willEncounterWall({...character,y: character.y - 1.5}, wall)) {
+                            doesItCollide = true } 
+                    })
+                    if (doesItCollide === false) {
+                        character.y -= 1.5;
+                        document.querySelector(".character").style.top = character.y + "%"; }
+
+                        willExitMaze(character)
+                    
+                }
+
+                if(btnHard.classList.contains("selected")) {
+                    let doesItCollide = false; // GO RIGHT
+                    walls.forEach(wall => {
+                        if(willEncounterWall({...character,x: character.x + 1.5}, wall)) 
+                        { doesItCollide = true; }
+                    })
+                    if (doesItCollide === false) 
+                    { character.x += 1.5;
+                        document.querySelector(".character").style.left = character.x + "%"; } 
+                        
+                    willExitMaze(character)
+                }
+            }
+
+            if (e.key === "s") { //DOWN
+
+                // DOWN --> DOWN
+                if(!btnHard.classList.contains("selected")) {
+                    let doesItCollide = false; // DOWN
+                    walls.forEach(wall => {
+                        if(willEncounterWall({...character,y: character.y + 1.5}, wall)) {
+                            doesItCollide = true }      
+                    })
+                    if(doesItCollide === false) {
+                        character.y += 1.5;
+                        document.querySelector(".character").style.top = character.y + "%"; }
+
+                    willExitMaze(character)
+                }
+                if(btnHard.classList.contains("selected")) {
+                    let doesItCollide = false; //UP
+                    walls.forEach(wall => {
+                        if(willEncounterWall({...character,y: character.y - 1.5}, wall)) {
+                            doesItCollide = true } 
+                    })
+                    if (doesItCollide === false) {
+                        character.y -= 1.5;
+                        document.querySelector(".character").style.top = character.y + "%"; }
+                    
+                    willExitMaze(character)
+                }
+            }
+        }
     }
 }
 
