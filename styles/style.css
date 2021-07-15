@@ -43,7 +43,7 @@ body {
 
 .character {
     position: absolute;
-    background-color: red;
+    background-size: 100%;
 }
 
 

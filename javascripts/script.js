@@ -32,11 +32,12 @@ class Maze {
 }
 
 class Character {
-    constructor(x, y, w, h) {
+    constructor(x, y, w, h, bg) {
         this.x = x;
         this.y = y; 
         this.w = w;
-        this.h = h
+        this.h = h;
+        this.bg = bg;
     }
 
     createCharacter() {
@@ -45,15 +46,13 @@ class Character {
     document.querySelector(".maze-area").appendChild(newChar);
     document.querySelector(".character").style.width = this.w + "%";
     document.querySelector(".character").style.height = this.h + "%";
-    document.querySelector(".character").style.top = this.y + "%";
-    document.querySelector(".character").style.left = this.x + "%";
+    document.querySelector(".character").style.backgroundImage = this.bg
     }
 
-    setAttributeCharacter() {
-    // document.querySelector(".character").style.width = this.w + "%";
-    // document.querySelector(".character").style.height = this.h + "%";
-    // document.querySelector(".character").style.top = this.y + "%";
-    // document.querySelector(".character").style.left = this.x + "%";
+    setCharacterPosition() {
+        document.querySelector(".character").style.top = this.y + "%";
+        document.querySelector(".character").style.left = this.x + "%";
+        console.log("setCharacterPosition works")
     }
 
     playerExits () {
@@ -61,6 +60,11 @@ class Character {
             winGame();
             return true
         }
+    }
+
+    placeCharacter () {
+        this.createCharacter();
+        this.setCharacterPosition();
     }
 }
 
@@ -102,10 +106,9 @@ btnStop.onclick = stopGame
 btnEasy.onclick = function () { 
     btnEasy.classList.add("selected")
     mazeEasy.createMaze(wallsEasy);
-    startGame(5);
+    startGame(20);
     
 }
-
 
 btnMedium.onclick = function () { 
     btnMedium.classList.add("selected")
@@ -113,7 +116,6 @@ btnMedium.onclick = function () {
     startGame(60);
     
 }
-
 
 btnHard.onclick = function () { 
     btnHard.classList.add("selected")
@@ -137,13 +139,12 @@ function startGame(counterBegin) { // START THE GAME
     btnStop.classList.remove("hidden");
 
     // SET GAME
-    if(btnEasy.classList.contains("selected")) { characterEasy.createCharacter() }
-    if(btnMedium.classList.contains("selected")) { characterMedium.createCharacter() }
-    if(btnHard.classList.contains("selected")) { characterHard.createCharacter() }
+    if(btnEasy.classList.contains("selected")) { characterEasy.placeCharacter() }
+    if(btnMedium.classList.contains("selected")) { characterMedium.placeCharacter() }
+    if(btnHard.classList.contains("selected")) { characterHard.placeCharacter() }
     startTimer(counterBegin)
     timerText.classList.remove("hidden");
 }
-
 
   
 function stopGame() {
@@ -151,6 +152,9 @@ function stopGame() {
     btnEasy.classList.remove("hidden");
     btnMedium.classList.remove("hidden");
     btnHard.classList.remove("hidden");
+    if(btnEasy.classList.contains("selected")) {btnEasy.classList.remove("selected");}
+    if(btnMedium.classList.contains("selected")) {btnMedium.classList.remove("selected");}
+    if(btnHard.classList.contains("selected")) {btnHard.classList.remove("selected");}
     startSettings.classList.remove("hidden")
     btnStop.classList.add("hidden")
     timerText.classList.add("hidden")
@@ -177,7 +181,7 @@ function winGame() {
     winMessage.classList.remove("hidden");
     btnStop.classList.add("hidden")
     gameArea.classList.toggle("opaque");
-    characterDisplay.classList.add("opaque");
+    document.querySelector(".character").classList.add("opaque");
     
     // GAME
     clearTimer()
@@ -189,9 +193,12 @@ function newGame() {
     if(!winMessage.classList.contains("hidden")) { winMessage.classList.add("hidden"); }
     startSettings.classList.remove("hidden");
     gameArea.classList.remove("opaque");
-    btnEasy.classList.toggle("selected");
-    btnMedium.classList.toggle("selected");
-    btnHard.classList.toggle("selected")
+
+    // RESET LEVEL
+    if(btnEasy.classList.contains("selected")) {btnEasy.classList.remove("selected");}
+    if(btnMedium.classList.contains("selected")) {btnMedium.classList.remove("selected");}
+    if(btnHard.classList.contains("selected")) {btnHard.classList.remove("selected");}
+    
     
 
     // GAME
@@ -207,52 +214,112 @@ function commands(character, walls) {
     document.onkeydown = function (e) {
         character.playerExits()
 
-        if(!character.playerExits()) {
-        
-            if (e.key === "d") { //RIGHT
-                let doesItCollide = false;
-                walls.forEach(wall => {
-                    if(isCollidingWall({...character,x: character.x + 1.5}, wall)) 
-                    { doesItCollide = true; }
-                })
-                if (doesItCollide === false) 
-                { character.x += 1.5;
-                    document.querySelector(".character").style.left = character.x + "%"; }     
-            }
+            if(!character.playerExits()) {
+                if (e.key === "d") { // RIGHT KEY
 
-            if (e.key === "q") { //LEFT
-                let doesItCollide = false;
-                walls.forEach(wall => {
-                    if(isCollidingWall({...character,x: character.x - 1.5}, wall)) {
-                        doesItCollide = true; }
-                })
-                if (doesItCollide === false) {
-                    character.x -= 1.5;
-                    document.querySelector(".character").style.left = character.x + "%"; }
-            }
+                    //RIGHT --> RIGHT
+                    if(!btnHard.classList.contains("selected")) {
+                        let doesItCollide = false; 
+                        walls.forEach(wall => {
+                            if(isCollidingWall({...character, x: character.x + 1.5}, wall)) 
+                            { doesItCollide = true; }
+                        })
+                        if (doesItCollide === false) 
+                        { character.x += 1.5;
+                            document.querySelector(".character").style.left = character.x + "%"; }  
+                    }   
 
-            if (e.key === "z") { //UP
-                let doesItCollide = false;
-                walls.forEach(wall => {
-                    if(isCollidingWall({...character,y: character.y - 1.5}, wall)) {
-                        doesItCollide = true } 
-                })
-                if (doesItCollide === false) {
-                    character.y -= 1.5;
-                    document.querySelector(".character").style.top = character.y + "%"; }
-            }
+                    // RIGHT --> LEFT
+                    if(btnHard.classList.contains("selected")) {
+                        let doesItCollide = false; 
+                        walls.forEach(wall => {
+                            if(isCollidingWall({...character, x: character.x - 1.5}, wall)) {
+                                doesItCollide = true; }
+                        })
+                        if (doesItCollide === false) {
+                            character.x -= 1.5;
+                            document.querySelector(".character").style.left = character.x + "%"; }
+                    }
+                }
 
-            if (e.key === "s") { //DOWN
-                let doesItCollide = false;
-                walls.forEach(wall => {
-                    if(isCollidingWall({...character,y: character.y + 1.5}, wall)) {
-                        doesItCollide = true }      
-                })
-                if(doesItCollide === false) {
-                    character.y += 1.5;
-                    document.querySelector(".character").style.top = character.y + "%"; }
+                if (e.key === "q") { //LEFT
+
+                    // LEFT --> LEFT
+                    if(!btnHard.classList.contains("selected")) {
+                        let doesItCollide = false; 
+                        walls.forEach(wall => {
+                            if(isCollidingWall({...character,x: character.x - 1.5}, wall)) {
+                                doesItCollide = true; }
+                        })
+                        if (doesItCollide === false) {
+                            character.x -= 1.5;
+                            document.querySelector(".character").style.left = character.x + "%"; }
+                    }
+
+                    // LEFT --> DOWN
+                    if(btnHard.classList.contains("selected")) {
+                        let doesItCollide = false; // 
+                        walls.forEach(wall => {
+                            if(isCollidingWall({...character,y: character.y + 1.5}, wall)) {
+                                doesItCollide = true }      
+                        })
+                        if(doesItCollide === false) {
+                            character.y += 1.5;
+                            document.querySelector(".character").style.top = character.y + "%"; }
+                    }
+                }
+
+                if (e.key === "z") { 
+
+                    // UP --> UP
+                    if(!btnHard.classList.contains("selected")) {
+                        let doesItCollide = false; //UP
+                        walls.forEach(wall => {
+                            if(isCollidingWall({...character,y: character.y - 1.5}, wall)) {
+                                doesItCollide = true } 
+                        })
+                        if (doesItCollide === false) {
+                            character.y -= 1.5;
+                            document.querySelector(".character").style.top = character.y + "%"; }
+                    }
+
+                    if(btnHard.classList.contains("selected")) {
+                        let doesItCollide = false; // GO RIGHT
+                        walls.forEach(wall => {
+                            if(isCollidingWall({...character,x: character.x + 1.5}, wall)) 
+                            { doesItCollide = true; }
+                        })
+                        if (doesItCollide === false) 
+                        { character.x += 1.5;
+                            document.querySelector(".character").style.left = character.x + "%"; }  
+                    }
+                }
+
+                if (e.key === "s") { //DOWN
+
+                    // DOWN --> DOWN
+                    if(!btnHard.classList.contains("selected")) {
+                        let doesItCollide = false; // DOWN
+                        walls.forEach(wall => {
+                            if(isCollidingWall({...character,y: character.y + 1.5}, wall)) {
+                                doesItCollide = true }      
+                        })
+                        if(doesItCollide === false) {
+                            character.y += 1.5;
+                            document.querySelector(".character").style.top = character.y + "%"; }
+                    }
+                    if(btnHard.classList.contains("selected")) {
+                        let doesItCollide = false; //UP
+                        walls.forEach(wall => {
+                            if(isCollidingWall({...character,y: character.y - 1.5}, wall)) {
+                                doesItCollide = true } 
+                        })
+                        if (doesItCollide === false) {
+                            character.y -= 1.5;
+                            document.querySelector(".character").style.top = character.y + "%"; }
+                    }
+                }
             }
-        }
     }
 }
 
@@ -298,12 +365,11 @@ function resetTimer() {
 const mazeEasy = new Maze(1000, 500)
 const mazeMedium = new Maze(1000, 500)
 const mazeHard = new Maze(1000, 500)
-const characterEasy = new Character (46, 0, 2, 4)
-const characterMedium = new Character (46, 0, 2, 4)
-const characterHard = new Character (46, 0, 2, 4)
+const characterEasy = new Character (46, 0, 2, 4, "url(../img/star-wars-sprites/luke_walking_left.png)")
+const characterMedium = new Character (46, 0, 2, 4, "url(../img/star-wars-sprites/clone_walking_right.jpeg)")
+const characterHard = new Character (46, 0, 2, 4, "url(../img/star-wars-sprites/vader_walking_left.jpeg)")
 
 commands(characterEasy, wallsEasy)
-
 
 
 
