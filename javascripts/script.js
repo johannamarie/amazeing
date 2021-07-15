@@ -42,14 +42,18 @@ class Character {
     createCharacter() {
     const newChar = document.createElement("div");
     newChar.className = "character";
-    document.querySelector(".maze-area").appendChild(newChar)
-    }
-
-    setAttributeCharacter() {
+    document.querySelector(".maze-area").appendChild(newChar);
     document.querySelector(".character").style.width = this.w + "%";
     document.querySelector(".character").style.height = this.h + "%";
     document.querySelector(".character").style.top = this.y + "%";
     document.querySelector(".character").style.left = this.x + "%";
+    }
+
+    setAttributeCharacter() {
+    // document.querySelector(".character").style.width = this.w + "%";
+    // document.querySelector(".character").style.height = this.h + "%";
+    // document.querySelector(".character").style.top = this.y + "%";
+    // document.querySelector(".character").style.left = this.x + "%";
     }
 
     playerExits () {
@@ -60,10 +64,9 @@ class Character {
     }
 }
 
-function destroyWalls() {
+function destroyMaze() {
     document.querySelector(".game-section").removeChild(document.querySelector(".maze-area"))
 }
-
 
 // BUTTONS
 // const btnStart = document.getElementById("start-game");
@@ -71,7 +74,8 @@ const btnStop = document.getElementById("btn-stop")
 const btnEasy = document.getElementById("level-easy");
 const btnMedium = document.getElementById("level-medium");
 const btnHard = document.getElementById("level-hard");
-const btnNewGame = document.querySelectorAll(".restart-game")
+const btnNewGameWin = document.getElementById("restart-game-win")
+const btnNewGameLose = document.getElementById("restart-game-lose")
 
 // GAME AREA
 const characterDisplay = document.querySelector(".character");
@@ -88,34 +92,6 @@ const startSettings = document.querySelector(".start-settings");
 const loseMessage = document.querySelector(".lose-game");
 const winMessage = document.querySelector(".win-game")
 
-
-// TIMER
-let intervalId
-let counter ;
-
-function startTimer(counterBegin) {
-    counter = counterBegin
-    
-    intervalId = setInterval(function () {
-        counter -= 1;
-    if (counter === 0) {
-        clearInterval(intervalId);
-        loseGame()
-    }
-    timer.textContent = counter;
-    }, 1000)
-    
-}
-
-function clearTimer() {
-    clearInterval(intervalId);
-    timer.textContent = counter 
-}
-
-function resetTimer() {
-    counter = counterBegin;
-    timer.textContent = counter;
-}
 
 // STOP BUTTON
 btnStop.onclick = stopGame
@@ -140,30 +116,33 @@ btnHard.onclick = function () {
 }
 
 document.querySelectorAll(".restart-game").onclick = function () {
-    console.log("newgame works")
+    console.log("newgame works");
     // timerText.classList.add("hidden");
-    // destroyWalls();
+    // destroyMaze();
 }
 
+btnNewGameLose.onclick = newGame
 
+btnNewGameWin.onclick = newGame 
 
 function startGame(counterBegin) { // START THE GAME
     //MAKE DISAPPEAR
-    btnEasy.classList.add("hidden");
-    btnMedium.classList.add("hidden");
-    btnHard.classList.add("hidden");
+    // btnEasy.classList.add("hidden");
+    // btnMedium.classList.add("hidden");
+    // btnHard.classList.add("hidden");
     startSettings.classList.add("hidden");
     
     // MAKE BTN STOP
     btnStop.classList.remove("hidden");
 
     // SET GAME
-    
     character.createCharacter()
     character.setAttributeCharacter()
     startTimer(counterBegin)
     timerText.classList.remove("hidden");
 }
+
+
   
 function stopGame() {
     // MAKE APPEAR
@@ -174,26 +153,45 @@ function stopGame() {
     btnStop.classList.add("hidden")
 
     // END GAME
-    destroyWalls(gameArea.children)
+    destroyMaze(gameArea.children)
     clearTimer()
-    document.querySelector(".character").classList.add("hidden")
 }
 
 function loseGame() {
+    // DISPLAY ELEMENTS
     loseMessage.classList.remove("hidden");
-    document.getElementById("btn-stop").classList.add(".hidden")
-    gameArea.classList.toggle("opaque");
-    document.querySelector(".character").classList.toggle("opaque");
+    btnStop.classList.add("hidden")
+    gameArea.classList.add("opaque");
+    document.querySelector(".character").classList.add("opaque");
+    
+    // GAME
     clearTimer()
 }
+
 
 function winGame() {
+    // DISPLAY
     winMessage.classList.remove("hidden");
-    gameArea.classList.add("opaque");
-    characterDisplay.classList.toggle("opaque");
+    btnStop.classList.add("hidden")
+    gameArea.classList.toggle("opaque");
+    characterDisplay.classList.add("opaque");
+    
+    // GAME
     clearTimer()
-
 }
+
+function newGame() {
+    // DISPLAYED ELEMENTS
+    loseMessage.classList.add("hidden");
+    startSettings.classList.remove("hidden");
+    gameArea.classList.remove("opaque");
+
+    // GAME
+    destroyMaze(gameArea.children)
+    clearTimer()
+}
+
+
 
 // COMMANDS
 
@@ -259,6 +257,34 @@ function isCollidingWall (character, wall) {
     } else return false
 }
 
+
+// TIMER
+let intervalId
+let counter ;
+
+function startTimer(counterBegin) {
+    counter = counterBegin
+    
+    intervalId = setInterval(function () {
+        counter -= 1;
+    if (counter === 0) {
+        clearInterval(intervalId);
+        loseGame()
+    }
+    timer.textContent = counter;
+    }, 1000)
+    
+}
+
+function clearTimer() {
+    clearInterval(intervalId);
+    timer.textContent = counter 
+}
+
+function resetTimer() {
+    counter = counterBegin;
+    timer.textContent = counter;
+}
 
 
 const mazeEasy = new Maze(1000, 500)
