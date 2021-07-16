@@ -186,17 +186,18 @@ function startGame(counterBegin) { // START THE GAME
     if(btnMast.classList.contains("selected")) timerRotate() 
 }
 
-
-
-
-
-
-
+// TIMER 
 let timerRotate = () => setTimeout(() => {
     toggleRotation()
     timerRotate();
+    clearTimeout
 }, randRange(timeArray))
   
+
+function clearTimerRotate() {
+    clearTimeout(timerRotate);
+}
+
 function stopGame() {
     // MAKE APPEAR
     btnBeg.classList.remove("hidden");
@@ -209,12 +210,14 @@ function stopGame() {
     startSettings.classList.remove("hidden")
     btnStop.classList.add("hidden")
     timerText.classList.add("hidden")
+    // clearTimeout(timerRotate)
     
 
     // END GAME
     destroyMaze(gameArea.children)
     clearTimer()
-    clearInterval(timerRotate);
+    clearTimerRotate()
+    
 }
 
 function loseGame() {
@@ -252,7 +255,8 @@ function newGame() {
     timerText.classList.add("hidden")
 
     // RESET LEVEL
-    if(btnBeg.classList.contains("selected")) {btnBeg.classList.remove("selected");}
+    if(btnBeg.classList.contains("selected")) {btnBeg.classList.remove("selected"); document.queryDocument("body").style.backgroundImage = rgba(204,171,216,255)
+}
     if(btnInt.classList.contains("selected")) {btnInt.classList.remove("selected");}
     if(btnAdv.classList.contains("selected")) {btnAdv.classList.remove("selected");}
     if(btnMast.classList.contains("selected")) {btnMast.classList.remove("selected");}
@@ -282,7 +286,6 @@ function commands(character, walls) {
                 } 
                 else goLeft(character, walls) //  RIGHT --> LEFT
             }
-
             if (e.key === "q") { // LEFT KEY
                 if(btnBeg.classList.contains("selected")) { // BEG == LEFT --> LEFT
                     goLeft(character, walls)
@@ -327,7 +330,7 @@ function goRight (character, walls) {
 
     willExitMaze(character)
 
-    document.querySelector(".character").style.backgroundImage = "url(../img/dino-right.png)"
+    document.querySelector(".character").style.backgroundImage = "url(./img/dino-right.png)"
 }
 
 // GO LEFT
@@ -344,7 +347,7 @@ function goLeft (character, walls) {
     
     willExitMaze(character);
 
-    document.querySelector(".character").style.backgroundImage = "url(../img/dino-left.png)"
+    document.querySelector(".character").style.backgroundImage = "url(./img/dino-left.png)"
 }
 
 // GO UP
