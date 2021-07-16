@@ -8,50 +8,61 @@
     <link rel="stylesheet" href="styles/style.css" />
 </head>
 <body>
+
+    <!-- <div class="name-user">
+        <p>And who are you stranger ?</p>
+        <input id="input-name" placeholder="NAME">
+        <button id="submit-name" class="button">A-MAZE ME</button>
+    </div> -->
+
     <div class="timer-text hidden">
     <p>You've got <span id="timer">60</span> seconds left.</p>
     </div>
 
 <!-- GAME AREA-->
-    <div class="game-section">
+    <div class="game-section rotate">
     </div>
 
+    <!-- BUTTON STOP-->
     <div class="btn-stop">
     <button id="btn-stop" class="button hidden">STOP</button>
     </div>
 
+    <!-- EXPLANATION + LEVELS-->
     <div class="start-settings">
 
-        <div id="rules-section">
+        <div id="rules-section" class="">
             <h1>LIFE IS A MAZE</h1>
             <p>it's a maze. i think it's pretty self-explanatory.</p>
             <p>choose a level to start.</p>
-            
         </div>
 
         <div class="levels">
-            <button id='level-easy' class="level button">EASY</button>
-            <button id="level-medium" class="level button">MEDIUM</button>
-            <button id="level-hard" class="level button">HARD</button>
+            <button id='level-easy' class="level button">BEGINNER</button>
+            <button id="level-medium" class="level button">INTERMEDIATE</button>
+            <button id="level-hard" class="level button">ADVANCED</button>
+            <button id="level-hard" class="level button">EXPERT</button>
         </div>
 
     </div>
 
+    <!-- WIN MESSAGE -->
         <div class="win-message end-message hidden">
             <h3>A-MAZE-ING! </h3>
-            <p>I guess you don't suck as much as you think you do</p>
+            <p>it took you only a minotaur two to get out !</p>
             <button id="restart-game-win" class="button restart">NEW GAME</button>
         </div>
 
-        <div class="lose-message end-message hidden">
-            <h3>Oh no... you didn't make it on time...</h3>
-            <p>tsokay ! Just try again <span id="name"></span> &#128521</p>
-            <audio id="sad-audience">
-                <source src="audio/awwww.wav" type="audio">
-                <source src="audio/awwww.mp3" type>
-            </audio>
-            <button id="restart-game-lose" class="button restart">NEW GAME</button>
-        </div>
+    <!-- LOSE MESSAGE -->
+    <div class="lose-message end-message hidden">
+        <h3>Oh no... you didn't make it on time...</h3>
+        <p>tsokay ! Just try again <span id="name"></span> &#128521</p>
+        <audio id="sad-audience">
+            <source src="audio/awwww.wav" type="audio">
+            <source src="audio/awwww.mp3" type>
+        </audio>
+        <button id="restart-game-lose" class="button restart">NEW GAME</button>
+    </div>
 
     
     <script src="javascripts/maze-1.js"></script>

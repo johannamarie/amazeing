@@ -90,8 +90,7 @@ const wallsEasy = [
     { type: 'vertical', x: 100, y: 0, w: 0.5, h: 101, id: 89 }
 ]
 
-const exitEasy = {type: 'exit', x: 50, y: 99.5, h: 0.5, w: 5,  }
-
+const exitEasy = {type: 'exit', x: 50, y: 99.5, h: 0.5, w: 5}
 
 const wallsMedium = [
     { type: 'horizontal', x: 0, y: 0, w: 45, h: 1, id: 1 },
@@ -184,6 +183,15 @@ const wallsMedium = [
     { type: 'vertical', x: 95, y: 60, w: 0.5, h: 30, id: 88 },
     { type: 'vertical', x: 100, y: 0, w: 0.5, h: 101, id: 89 }
 ]
+
+
+// const wallsMedium = [
+//     { type: 'horizontal', x: 0, y: 0, w: 45, h: 1, id: 1 },
+//     { type: 'horizontal', x: 50, y: 0, w: 50, h: 1, id: 2},
+//     { type: 'horizontal', x: 2.5, y: 10, w: 5, h: 1, id: 3},
+//     { type: 'horizontal', x: 10, y: 10, w: 5, h: 1, id: 4},
+//     { type: 'horizontal', x: 25, y: 10, w: 2.5, h: 1, id: 4},
+// ]
 
 const exitMedium = {type: 'exit', x: 50, y: 90, w: 5, h: 10 }
 

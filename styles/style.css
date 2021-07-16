@@ -20,6 +20,7 @@ body {
     align-items: center;
     position: relative;
     height: fit-content;
+    background-color: rgba(255, 255, 255, 0.5)
 }
 
 #timer {
@@ -43,12 +44,11 @@ body {
 .character {
     position: absolute;
     background-size: 100%;
-
 }
 
 
 .wall {
-    background-color: dimgray;
+    background-color: black;
     position: absolute;
 }
 
@@ -57,7 +57,6 @@ body {
     visibility: hidden;
 }
 
-/* RULES SECTION */
 #rules-section {
     width: 800px;
     color: dimgray;
@@ -68,15 +67,17 @@ p {
     text-align:center;
 }
 
-/* BUTTONS */ 
-
 .button {
     color: rgba(105, 105, 105, 0.283);
     background-color: rgba(0, 0, 0, 0);
     font-size: 2em;
-    width: 200px;
+    width: fit-content;
     border: none;
     margin: 0 auto;
+}
+
+.button:hover {
+    border-bottom: rgba(204,171,216,255) 2px solid
 }
 
 
@@ -89,9 +90,8 @@ p {
     align-items:flex-start
 }
 
-
 .start-settings {
-    background-color: rgba(198, 198, 198, 0.2);
+    background-color: rgba(225,212,221,255);
     display: flex;
     flex-direction: column;
     justify-content:space-around;
@@ -103,11 +103,9 @@ p {
     top: 20%;
 }
 
-
 .selected {
     font-weight: bold;
 }
-
 
 .end-game-message h3 {
     font-size: 2em;
@@ -116,7 +114,6 @@ p {
 }
 
 .end-message {
-    background-color: rgba(198, 198, 198, 0.8);
     color: white;
     margin: 0 auto;
     top: 20%;
@@ -128,11 +125,12 @@ p {
     justify-content: center;
 }
 
-.end-message h3 {
-    font-size: 2em;
-    text-align: center;
-    text-transform: uppercase;
-    margin: 0
+.lose-message {
+    background-color: rgba(225,212,221,255)    ;
+}
+
+.win-message {
+    background-color: rgba(204,171,216,255);
 }
 
 .opaque {
@@ -152,11 +150,24 @@ h2, h1 {
     position: absolute;
 }
 
-#timer.alert {
-    color:white;
-    font-weight: bold;
-}
-
 .btn-stop {
     margin: 3em auto
 }
+
+
+.name-user {
+    position: static;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.rotate {
+    
+}
+
+
+
+
+

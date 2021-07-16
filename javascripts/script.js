@@ -22,7 +22,7 @@ const loseMessage = document.querySelector(".lose-message");
 const winMessage = document.querySelector(".win-message");
 
 // EXTRA
-const sadAudio = document.getElementById("sad-audience")
+const video = document.getElementById("myVideo");
 
 
 class Maze {
@@ -34,7 +34,7 @@ class Maze {
     createMazeArea() {
         const newMaze = document.createElement("div");
         newMaze.className = "maze-area";
-        document.querySelector(".game-section").appendChild(newMaze, document.getElementById("btn-stop"))
+        document.querySelector(".game-section").appendChild(newMaze)
         document.querySelector(".game-section").style.width = this.w + "px";
         document.querySelector(".game-section").style.height = this.h + "px";
     }
@@ -91,6 +91,12 @@ class Character {
         document.querySelector(".character").style.top = this.y + "%";
         document.querySelector(".character").style.left = this.x + "%";
     }
+
+    placeCharacter () {
+        this.createCharacter();
+        this.setCharacterPosition();
+        
+    }
 }
 
 function destroyCharacter () {
@@ -105,8 +111,8 @@ function destroyMaze() {
 }
 
 
-const mazeEasy = new Maze(1200, 1200/2)
-const mazeMedium = new Maze(1000, 500)
+const mazeEasy = new Maze(1200, 600)
+const mazeMedium = new Maze(1200, 600)
 const mazeHard = new Maze(1000, 500)
 const characterEasy = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
 const characterMedium = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
@@ -155,9 +161,9 @@ function startGame(counterBegin) { // START THE GAME
     btnStop.classList.remove("hidden");
 
     // SET GAME
-    if(btnEasy.classList.contains("selected")) { characterEasy.createCharacter(); characterEasy.setCharacterPosition() }
-    if(btnMedium.classList.contains("selected")) { characterMedium.createCharacter(); characterMedium.setCharacterPosition() }
-    if(btnHard.classList.contains("selected")) { characterHard.createCharacter(); characterHard.setCharacterPosition() }
+    if(btnEasy.classList.contains("selected")) { characterEasy.placeCharacter() }
+    if(btnMedium.classList.contains("selected")) { characterMedium.placeCharacter() }
+    if(btnHard.classList.contains("selected")) { characterHard.placeCharacter() }
     startTimer(counterBegin)
     timerText.classList.remove("hidden");
 }
@@ -387,6 +393,7 @@ function arrivedAtExit (character, exit) {
 
 
 
+
 // TIMER
 let intervalId
 let counter ;
@@ -414,6 +421,39 @@ function resetTimer() {
     counter = counterBegin;
     timer.textContent = counter;
 }
+
+// LEVEL MEDIUM 
+
+if(btnEasy.classList.contains("selected")) {
+}
+
+
+
+
+
+
+function randRange(data) {
+    const newTime = data[Math.floor(data.length * Math.random())];
+    return newTime
+}
+
+const areaRotate = document.querySelector(".rotate");
+
+
+function toggleRotation() {
+    let newDegree = Math.floor(Math.random() * 180)
+    const timeArray = new Array(8000, 9000, 10000);
+    areaRotate.style.transform = `rotate(${newDegree}deg)`
+    clearInterval(timerRotate);
+    timerRotate = setInterval(toggleRotation, randRange(timeArray));
+}
+
+let timerRotate = setInterval(toggleRotation, 1000);
+
+
+ 
+
+
 
 
 
