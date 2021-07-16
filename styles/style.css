@@ -107,9 +107,9 @@ p {
     font-weight: bold;
 }
 
-.end-game-message h3 {
+.end-message h3 {
+    margin: auto auto;
     font-size: 2em;
-    text-align: center;
     text-transform: uppercase;
 }
 
@@ -179,13 +179,4 @@ h2, h1 {
 .commands ul li {
     text-align: center;
 }
-
-/* #myVideo {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-  } */
-
 

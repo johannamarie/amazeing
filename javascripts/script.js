@@ -299,12 +299,12 @@ function commands(character, walls) {
             }
             if (e.key === "q") { // LEFT KEY
                 if(btnBeg.classList.contains("selected")) { // BEG == LEFT --> LEFT
-                    goLeft(character, walls)
+                    return goLeft(character, walls)
                 }
                 if(btnInt.classList.contains("selected")) {  // INT == LEFT --> RIGHT
-                    goRight(character, walls)
+                   return goRight(character, walls)
                 }
-                else goDown(character, walls) // LEFT --> DOWN
+                else return goDown(character, walls) // LEFT --> DOWN
             }
 
             if (e.key === "z") { // UP KEY
@@ -319,9 +319,9 @@ function commands(character, walls) {
 
             if (e.key === "s") { // DOWN KEY
                 if(btnBeg.classList.contains("selected")) { // DOWN --> DOWN
-                    goDown(character, walls)
+                    return goDown(character, walls)
                 }
-                else goUp(character, walls) // DOWN --> UP
+                else return goUp(character, walls) // DOWN --> UP
             }
         }
     }
@@ -329,7 +329,6 @@ function commands(character, walls) {
 
 // GO RIGHT
 function goRight (character, walls) {
-    console.log("right")
     let doesItCollide = false; 
     walls.forEach(wall => {
         if(willEncounterWall({...character, x: character.x + 1.5}, wall)) 
@@ -341,12 +340,11 @@ function goRight (character, walls) {
 
     willExitMaze(character)
 
-    document.querySelector(".character").style.backgroundImage = "url(./img/dino-right.png)"
+    document.querySelector(".character").style.backgroundImage = "url(img/dino-right.png)"
 }
 
 // GO LEFT
 function goLeft (character, walls) {
-    console.log("left")
     let doesItCollide = false; 
     walls.forEach(wall => {
         if(willEncounterWall({...character,x: character.x - 1.5}, wall)) {
@@ -358,12 +356,11 @@ function goLeft (character, walls) {
     
     willExitMaze(character);
 
-    document.querySelector(".character").style.backgroundImage = "url(./img/dino-left.png)"
+    document.querySelector(".character").style.backgroundImage = "url(img/dino-left.png)"
 }
 
 // GO UP
 function goUp (character, walls) {
-    console.log("here")
     let doesItCollide = false; //UP
     walls.forEach(wall => {
         if(willEncounterWall({...character,y: character.y - 1.5}, wall)) {
@@ -377,7 +374,6 @@ function goUp (character, walls) {
 }
 
 function goDown (character, walls) {
-    console.log("down")
     let doesItCollide = false; // DOWN
     walls.forEach(wall => {
         if(willEncounterWall({...character,y: character.y + 1.5}, wall)) {
