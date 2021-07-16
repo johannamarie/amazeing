@@ -23,7 +23,8 @@ const startSettings = document.querySelector(".start-settings");
 const loseMessage = document.querySelector(".lose-message");
 const winMessage = document.querySelector(".win-message");
 
-
+// EXTRA
+const video = document.getElementById("myVideo");
 
 
 class Maze {
@@ -71,9 +72,6 @@ class Maze {
 }
 
 
-
-const mazeEasy = new Maze(1200, 600)
-
 class Character {
     constructor(x, y, w, h, bg) {
         this.x = x;
@@ -84,9 +82,9 @@ class Character {
     }
 
     createCharacter() {
-    const newCharacter = document.createElement("div");
-    newCharacter.className = "character";
-    document.querySelector(".maze-area").appendChild(newCharacter);
+    const newChar = document.createElement("div");
+    newChar.className = "character";
+    document.querySelector(".maze-area").appendChild(newChar);
     document.querySelector(".character").style.width = this.w + "%";
     document.querySelector(".character").style.height = this.h + "%";
     document.querySelector(".character").style.backgroundImage = this.bg;
@@ -95,141 +93,13 @@ class Character {
     }
 
 
-    arrivedAtExit (exit) {
-        if((this.x + this.w) > exit.x && this.x < (exit.x + exit.w) && (this.y + this.h) > exit.y && this.y < (exit.y + exit.h)) {
-            return true
-        } else return false
-        }
-
-    commands(walls) {
-        document.onkeydown = function (e) {
-    
-            if(arrivedAtExit (exitEasy)) {
-                winGame()
-            }
-            if (!arrivedAtExit (exitEasy)) {
-    
-                if (e.key === "d") { // RIGHT KEY
-    
-                    if(btnBeg.classList.contains("selected")) {
-                        return goRight(walls) // BEG == RIGHT --> RIGHT
-                    } 
-                    else return goLeft(walls) //  RIGHT --> LEFT
-                }
-    
-                if (e.key === "q") { // LEFT KEY
-                    if(btnBeg.classList.contains("selected")) { // BEG == LEFT --> LEFT
-                        return goLeft(walls)
-                    }
-                    if(btnInt.classList.contains("selected")) {  // INT == LEFT --> RIGHT
-                        return goRight(walls)
-                    }
-                    else goDown(walls) // LEFT --> DOWN
-                }
-    
-                if (e.key === "z") { // UP KEY
-                    if(btnBeg.classList.contains("selected")) { // BEG == UP --> UP
-                      return  goUp(walls)
-                    }
-                    if(btnInt.classList.contains("selected")) { // INT == UP --> DOWN
-                       return goDown(walls)
-                    }
-                    else return goRight(walls) // UP --> RIGHT
-                }
-    
-                if (e.key === "s") { // DOWN KEY
-                    if(btnBeg.classList.contains("selected")) { // DOWN --> DOWN
-                        return goDown(walls)
-                    }
-                    else return goUp(walls) // DOWN --> UP
-                }
-            }
-        }
-    }
-
-
-    // GO RIGHT
-    goRight (walls) {
-    console.log("right")
-    let doesItCollide = false; 
-    walls.forEach(wall => {
-        if(willEncounterWall({...this, x: this.x + 1.5}, wall)) 
-        { doesItCollide = true; }
-    })
-    if (doesItCollide === false) 
-    { this.x += 1.5;
-    document.querySelector(".character").style.left = this.x + "%"; }  
-
-    willExitMaze()
-
-    document.querySelector(".character").style.backgroundImage = "url(../img/dino-right.png)"
-}
-
-// GO LEFT
-    goLeft (walls) {
-    console.log("left")
-    let doesItCollide = false; 
-    walls.forEach(wall => {
-        if(willEncounterWall({...this,x: this.x - 1.5}, wall)) {
-            doesItCollide = true; }
-    })
-    if (doesItCollide === false) {
-        this.x -= 1.5;
-        document.querySelector(".character").style.left = this.x + "%"; };
-    
-    willExitMaze();
-
-    document.querySelector(".character").style.backgroundImage = "url(../img/dino-left.png)"
-}
-
-// GO UP
-    goUp (walls) {
-    console.log("here")
-    let doesItCollide = false; //UP
-    walls.forEach(wall => {
-        if(willEncounterWall({...this,y: this.y - 1.5}, wall)) {
-            doesItCollide = true } 
-    })
-    if (doesItCollide === false) {
-        this.y -= 1.5;
-        document.querySelector(".character").style.top = this.y + "%"; }
-
-        willExitMaze()
-    }
-
-    goDown (walls) {
-    console.log("down")
-    let doesItCollide = false; // DOWN
-    walls.forEach(wall => {
-        if(willEncounterWall({...this,y: this.y + 1.5}, wall)) {
-            doesItCollide = true }      
-    })
-    if(doesItCollide === false) {
-        this.y += 1.5;
-        document.querySelector(".character").style.top = this.y + "%"; }
-
-    willExitMaze()
-
-    }
-
-    willEncounterWall (wall) {
-    if((this.x + this.w) > wall.x && this.x < (wall.x + wall.w) && (this.y + this.h) > wall.y && this.y < (wall.y + wall.h)) {
-        return true
-    } else return false
-    }
-    willExitMaze () {
-    if (this.y < 0) {this.y = 0};
-    if (this.y + this.h > 100) {this.y = 100 - this.h};
-    if (this.x < 0) {this.x = 0};
-    if (this.x + this.w > 100 ) {this.x = 100 - this.w}
+    setCharacter(x1, y1) {
+        this.x = x1;
+        this.y = y1;
+        document.querySelector(".character").style.top = y1 + "%";
+        document.querySelector(".character").style.left = x1 + "%";
     }
 }
-
-
-
-const character = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
-
-
 
 function destroyCharacter () {
     const i = document.querySelector(".maze-area").children.length - 1
@@ -245,7 +115,16 @@ function destroyMaze() {
 
 
 
+const mazeEasy = new Maze(1200, 600)
 
+let characterBeg = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
+
+function initChar() {
+    let character 
+    characterBeg = character
+}
+
+commands(characterBeg, wallsEasy)
 
 
 
@@ -264,20 +143,20 @@ btnBeg.onclick = function () {
 
 btnInt.onclick = function () { 
     btnInt.classList.add("selected")
-    mazeMedium.createMaze(wallsMedium, exitMedium);
+    mazeEasy.createMaze(wallsEasy, exitEasy);
     startGame(60);
     
 }
 
 btnAdv.onclick = function () { 
     btnAdv.classList.add("selected")
-    mazeHard.createMaze(wallsHard, exitHard);
+    mazeEasy.createMaze(wallsEasy, exitEasy);
     startGame(60); 
 }
 
 btnMast.onclick = function () { 
     btnMast.classList.add("selected")
-    mazeHard.createMaze(wallsHard, exitHard);
+    mazeEasy.createMaze(wallsEasy, exitEasy);
     startGame(60); 
 }
 
@@ -297,28 +176,19 @@ function startGame(counterBegin) { // START THE GAME
     btnStop.classList.remove("hidden");
 
     // SET GAME
-    if(btnBeg.classList.contains("selected")) { character.createCharacter() }
+    if(btnBeg.classList.contains("selected")) { characterBeg.createCharacter(); characterBeg.setCharacter(46, 0) }
+    if(btnInt.classList.contains("selected")) { characterBeg.createCharacter(); characterBeg.setCharacter(46, 0) }
+    if(btnAdv.classList.contains("selected")) { characterBeg.createCharacter(); characterBeg.setCharacter(46, 0) }
+    if(btnMast.classList.contains("selected")) { characterBeg.createCharacter(); characterBeg.setCharacter(46, 0) }
     startTimer(counterBegin)
     timerText.classList.remove("hidden");
 
     if(btnMast.classList.contains("selected")) timerRotate() 
-
-    character.commands(wallsEasy)
 }
 
 
 
-function randRange(data) {
-    const newTime = data[Math.floor(data.length * Math.random())];
-    return newTime
-}
 
-const timeArray = new Array(2000, 3000, 1000);
-
-function toggleRotation() {
-    let newDegree = Math.floor(Math.random() * 180)
-    areaRotate.style.transform = `rotate(${newDegree}deg)`
-}
 
 
 
@@ -326,7 +196,6 @@ let timerRotate = () => setTimeout(() => {
     toggleRotation()
     timerRotate();
 }, randRange(timeArray))
-
   
 function stopGame() {
     // MAKE APPEAR
@@ -398,11 +267,134 @@ function newGame() {
 
 // COMMANDS EASY
 
+function commands(character, walls) {
+    document.onkeydown = function (e) {
 
+        if(arrivedAtExit (character, exitEasy)) {
+            winGame()
+        }
+        if (!arrivedAtExit (character, exitEasy)) {
 
+            if (e.key === "d") { // RIGHT KEY
 
+                if(btnBeg.classList.contains("selected")) {
+                    goRight(character, walls) // BEG == RIGHT --> RIGHT
+                } 
+                else goLeft(character, walls) //  RIGHT --> LEFT
+            }
 
+            if (e.key === "q") { // LEFT KEY
+                if(btnBeg.classList.contains("selected")) { // BEG == LEFT --> LEFT
+                    goLeft(character, walls)
+                }
+                if(btnInt.classList.contains("selected")) {  // INT == LEFT --> RIGHT
+                    goRight(character, walls)
+                }
+                else goDown(character, walls) // LEFT --> DOWN
+            }
 
+            if (e.key === "z") { // UP KEY
+                if(btnBeg.classList.contains("selected")) { // BEG == UP --> UP
+                  return  goUp(character, walls)
+                }
+                if(btnInt.classList.contains("selected")) { // INT == UP --> DOWN
+                   return goDown(character, walls)
+                }
+                else goRight(character, walls) // UP --> RIGHT
+            }
+
+            if (e.key === "s") { // DOWN KEY
+                if(btnBeg.classList.contains("selected")) { // DOWN --> DOWN
+                    goDown(character, walls)
+                }
+                else goUp(character, walls) // DOWN --> UP
+            }
+        }
+    }
+}
+
+// GO RIGHT
+function goRight (character, walls) {
+    console.log("right")
+    let doesItCollide = false; 
+    walls.forEach(wall => {
+        if(willEncounterWall({...character, x: character.x + 1.5}, wall)) 
+        { doesItCollide = true; }
+    })
+    if (doesItCollide === false) 
+    { character.x += 1.5;
+    document.querySelector(".character").style.left = character.x + "%"; }  
+
+    willExitMaze(character)
+
+    document.querySelector(".character").style.backgroundImage = "url(../img/dino-right.png)"
+}
+
+// GO LEFT
+function goLeft (character, walls) {
+    console.log("left")
+    let doesItCollide = false; 
+    walls.forEach(wall => {
+        if(willEncounterWall({...character,x: character.x - 1.5}, wall)) {
+            doesItCollide = true; }
+    })
+    if (doesItCollide === false) {
+        character.x -= 1.5;
+        document.querySelector(".character").style.left = character.x + "%"; };
+    
+    willExitMaze(character);
+
+    document.querySelector(".character").style.backgroundImage = "url(../img/dino-left.png)"
+}
+
+// GO UP
+function goUp (character, walls) {
+    console.log("here")
+    let doesItCollide = false; //UP
+    walls.forEach(wall => {
+        if(willEncounterWall({...character,y: character.y - 1.5}, wall)) {
+            doesItCollide = true } 
+    })
+    if (doesItCollide === false) {
+        character.y -= 1.5;
+        document.querySelector(".character").style.top = character.y + "%"; }
+
+        willExitMaze(character)
+}
+
+function goDown (character, walls) {
+    console.log("down")
+    let doesItCollide = false; // DOWN
+    walls.forEach(wall => {
+        if(willEncounterWall({...character,y: character.y + 1.5}, wall)) {
+            doesItCollide = true }      
+    })
+    if(doesItCollide === false) {
+        character.y += 1.5;
+        document.querySelector(".character").style.top = character.y + "%"; }
+
+    willExitMaze(character)
+
+}
+
+function willEncounterWall (character, wall) {
+    if((character.x + character.w) > wall.x && character.x < (wall.x + wall.w) && (character.y + character.h) > wall.y && character.y < (wall.y + wall.h)) {
+        return true
+    } else return false
+}
+
+function willExitMaze (character) {
+    if (character.y < 0) {character.y = 0};
+    if (character.y + character.h > 100) {character.y = 100 - character.h};
+    if (character.x < 0) {character.x = 0};
+    if (character.x + character.w > 100 ) {character.x = 100 - character.w}
+}
+
+function arrivedAtExit (character, exit) {
+    if((character.x + character.w) > exit.x && character.x < (exit.x + exit.w) && (character.y + character.h) > exit.y && character.y < (exit.y + exit.h)) {
+        return true
+    } else return false
+}
 
 
 
@@ -436,7 +428,15 @@ function resetTimer() {
 }
 
 
+function randRange(data) {
+    const newTime = data[Math.floor(data.length * Math.random())];
+    return newTime
+}
+
+const timeArray = new Array(2000, 9000, 10000);
 
 
-
-
+function toggleRotation() {
+    let newDegree = Math.floor(Math.random() * 180)
+    areaRotate.style.transform = `rotate(${newDegree}deg)`
+}
