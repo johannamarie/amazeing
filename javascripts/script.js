@@ -1,8 +1,9 @@
 // BUTTONS
 const btnStop = document.getElementById("btn-stop")
-const btnEasy = document.getElementById("level-easy");
-const btnMedium = document.getElementById("level-medium");
-const btnHard = document.getElementById("level-hard");
+const btnBeg = document.getElementById("level-beg");
+const btnInt = document.getElementById("level-int");
+const btnAdv = document.getElementById("level-adv");
+const btnMast = document.getElementById("level-mast");
 const btnNewGameWin = document.getElementById("restart-game-win")
 const btnNewGameLose = document.getElementById("restart-game-lose")
 
@@ -12,6 +13,7 @@ const mazeArea = document.querySelector(".maze-area")
 const gameArea = document.querySelector(".game-section");
 const wallDisplay = document.querySelectorAll(".wall");
 const timerDisplay = document.getElementById("timer");
+const areaRotate = document.querySelector(".rotate");
 
 // TEXT
 const btnRules = document.getElementById("rules");
@@ -114,11 +116,12 @@ function destroyMaze() {
 const mazeEasy = new Maze(1200, 600)
 const mazeMedium = new Maze(1200, 600)
 const mazeHard = new Maze(1000, 500)
-const characterEasy = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
-const characterMedium = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
-const characterHard = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
+const characterBeg = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
+const characterInt = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
+const characterAdv = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
+const characterMast = new Character (46, 0, 2, 4, "url(../img/dino-right.png)")
 
-commands(characterEasy, wallsEasy)
+commands(characterBeg, wallsEasy)
 
 
 
@@ -128,26 +131,35 @@ btnStop.onclick = stopGame
 
 
 // SELECT LEVEL
-btnEasy.onclick = function () { 
-    btnEasy.classList.add("selected")
+btnBeg.onclick = function () { 
+    btnBeg.classList.add("selected")
     mazeEasy.createMaze(wallsEasy, exitEasy);
     startGame(60);
     
 }
 
-btnMedium.onclick = function () { 
-    btnMedium.classList.add("selected")
+btnInt.onclick = function () { 
+    btnInt.classList.add("selected")
     mazeMedium.createMaze(wallsMedium, exitMedium);
     startGame(60);
     
 }
 
-btnHard.onclick = function () { 
-    btnHard.classList.add("selected")
+btnAdv.onclick = function () { 
+    btnAdv.classList.add("selected")
     mazeHard.createMaze(wallsHard, exitHard);
-    startGame(5); 
-    
+    startGame(60); 
 }
+
+btnMast.onclick = function () { 
+    btnMast.classList.add("selected")
+    mazeHard.createMaze(wallsHard, exitHard);
+    startGame(60); 
+}
+
+
+
+
 
 btnNewGameLose.onclick = newGame
 
@@ -161,28 +173,36 @@ function startGame(counterBegin) { // START THE GAME
     btnStop.classList.remove("hidden");
 
     // SET GAME
-    if(btnEasy.classList.contains("selected")) { characterEasy.placeCharacter() }
-    if(btnMedium.classList.contains("selected")) { characterMedium.placeCharacter() }
-    if(btnHard.classList.contains("selected")) { characterHard.placeCharacter() }
+    if(btnBeg.classList.contains("selected")) { characterBeg.placeCharacter() }
+    if(btnInt.classList.contains("selected")) { characterInt.placeCharacter() }
+    if(btnAdv.classList.contains("selected")) { characterAdv.placeCharacter() }
+    if(btnMast.classList.contains("selected")) { characterMast.placeCharacter() }
     startTimer(counterBegin)
     timerText.classList.remove("hidden");
+
+    if(btnMast.classList.contains("selected")) { timerRotate() };
 }
+
+let timerRotate = () => setInterval(toggleRotation(), randRange(timeArray))
   
 function stopGame() {
     // MAKE APPEAR
-    btnEasy.classList.remove("hidden");
-    btnMedium.classList.remove("hidden");
-    btnHard.classList.remove("hidden");
-    if(btnEasy.classList.contains("selected")) {btnEasy.classList.remove("selected");}
-    if(btnMedium.classList.contains("selected")) {btnMedium.classList.remove("selected");}
-    if(btnHard.classList.contains("selected")) {btnHard.classList.remove("selected");}
+    btnBeg.classList.remove("hidden");
+    btnInt.classList.remove("hidden");
+    btnAdv.classList.remove("hidden");
+    if(btnBeg.classList.contains("selected")) {btnBeg.classList.remove("selected");}
+    if(btnInt.classList.contains("selected")) {btnInt.classList.remove("selected");}
+    if(btnAdv.classList.contains("selected")) {btnAdv.classList.remove("selected");}
+    if(btnMast.classList.contains("selected")) {btnMast.classList.remove("selected");}
     startSettings.classList.remove("hidden")
     btnStop.classList.add("hidden")
     timerText.classList.add("hidden")
+    
 
     // END GAME
     destroyMaze(gameArea.children)
     clearTimer()
+    clearInterval(timerRotate);
 }
 
 function loseGame() {
@@ -220,9 +240,10 @@ function newGame() {
     timerText.classList.add("hidden")
 
     // RESET LEVEL
-    if(btnEasy.classList.contains("selected")) {btnEasy.classList.remove("selected");}
-    if(btnMedium.classList.contains("selected")) {btnMedium.classList.remove("selected");}
-    if(btnHard.classList.contains("selected")) {btnHard.classList.remove("selected");}
+    if(btnBeg.classList.contains("selected")) {btnBeg.classList.remove("selected");}
+    if(btnInt.classList.contains("selected")) {btnInt.classList.remove("selected");}
+    if(btnAdv.classList.contains("selected")) {btnAdv.classList.remove("selected");}
+    if(btnMast.classList.contains("selected")) {btnMast.classList.remove("selected");}
     
     // GAME
     destroyCharacter()
@@ -241,136 +262,104 @@ function commands(character, walls) {
             winGame()
         }
         if (!arrivedAtExit (character, exitEasy)) {
+
             if (e.key === "d") { // RIGHT KEY
 
-                //RIGHT --> RIGHT
-                if(!btnHard.classList.contains("selected")) {
-                    let doesItCollide = false; 
-                    walls.forEach(wall => {
-                        if(willEncounterWall({...character, x: character.x + 1.5}, wall)) 
-                        { doesItCollide = true; }
-                    })
-                    if (doesItCollide === false) 
-                    { character.x += 1.5;
-                        document.querySelector(".character").style.left = character.x + "%"; }  
-
-                    willExitMaze(character)
-                }   
-
-                // RIGHT --> LEFT
-                if(btnHard.classList.contains("selected")) {
-                    let doesItCollide = false; 
-                    walls.forEach(wall => {
-                        if(willEncounterWall({...character, x: character.x - 1.5}, wall)) {
-                            doesItCollide = true; }
-                    })
-                    if (doesItCollide === false) {
-                        character.x -= 1.5;
-                        document.querySelector(".character").style.left = character.x + "%"; }
-                    willExitMaze(character)
-                }
-
-                document.querySelector(".character").style.backgroundImage = "url(../img/dino-right.png)"
+                if(btnBeg.classList.contains("selected")) {
+                    goRight(character, walls) // BEG == RIGHT --> RIGHT
+                } 
+                else goLeft(character, walls) //  RIGHT --> LEFT
             }
 
-            if (e.key === "q") { //LEFT
-
-                // LEFT --> LEFT
-                if(!btnHard.classList.contains("selected")) {
-                    let doesItCollide = false; 
-                    walls.forEach(wall => {
-                        if(willEncounterWall({...character,x: character.x - 1.5}, wall)) {
-                            doesItCollide = true; }
-                    })
-                    if (doesItCollide === false) {
-                        character.x -= 1.5;
-                        document.querySelector(".character").style.left = character.x + "%"; }
-                    
-                    willExitMaze(character)
+            if (e.key === "q") { // LEFT KEY
+                if(btnBeg.classList.contains("selected")) { // BEG == LEFT --> LEFT
+                    goLeft(character, walls)
                 }
-
-                // LEFT --> DOWN
-                if(btnHard.classList.contains("selected")) {
-                    let doesItCollide = false; // 
-                    walls.forEach(wall => {
-                        if(willEncounterWall({...character,y: character.y + 1.5}, wall)) {
-                            doesItCollide = true }      
-                    })
-                    if(doesItCollide === false) {
-                        character.y += 1.5;
-                        document.querySelector(".character").style.top = character.y + "%"; }
-                    
-                    willExitMaze(character)
+                if(btnInt.classList.contains("selected")) {  // INT == LEFT --> RIGHT
+                    goRight(character, walls)
                 }
-
-                document.querySelector(".character").style.backgroundImage = "url(../img/dino-left.png)"
+                else goDown(character, walls) // LEFT --> DOWN
             }
 
-            if (e.key === "z") { 
-
-                // UP --> UP
-                if(!btnHard.classList.contains("selected")) {
-                    let doesItCollide = false; //UP
-                    walls.forEach(wall => {
-                        if(willEncounterWall({...character,y: character.y - 1.5}, wall)) {
-                            doesItCollide = true } 
-                    })
-                    if (doesItCollide === false) {
-                        character.y -= 1.5;
-                        document.querySelector(".character").style.top = character.y + "%"; }
-
-                        willExitMaze(character)
-                    
+            if (e.key === "z") { // UP KEY
+                if(btnBeg.classList.contains("selected")) { // BEG == UP --> UP
+                    goUp(character, walls)
                 }
-
-                if(btnHard.classList.contains("selected")) {
-                    let doesItCollide = false; // GO RIGHT
-                    walls.forEach(wall => {
-                        if(willEncounterWall({...character,x: character.x + 1.5}, wall)) 
-                        { doesItCollide = true; }
-                    })
-                    if (doesItCollide === false) 
-                    { character.x += 1.5;
-                        document.querySelector(".character").style.left = character.x + "%"; } 
-                        
-                    willExitMaze(character)
+                if(btnInt.classList.contains("selected")) { // INT == UP --> DOWN
+                    goDown(character, walls)
                 }
+                else goRight(character, walls) // UP --> RIGHT
             }
 
-            if (e.key === "s") { //DOWN
-
-                // DOWN --> DOWN
-                if(!btnHard.classList.contains("selected")) {
-                    let doesItCollide = false; // DOWN
-                    walls.forEach(wall => {
-                        if(willEncounterWall({...character,y: character.y + 1.5}, wall)) {
-                            doesItCollide = true }      
-                    })
-                    if(doesItCollide === false) {
-                        character.y += 1.5;
-                        document.querySelector(".character").style.top = character.y + "%"; }
-
-                    willExitMaze(character)
+            if (e.key === "s") { // DOWN KEY
+                if(btnBeg.classList.contains("selected")) { // DOWN --> DOWN
+                    goDown(character, walls)
                 }
-                if(btnHard.classList.contains("selected")) {
-                    let doesItCollide = false; //UP
-                    walls.forEach(wall => {
-                        if(willEncounterWall({...character,y: character.y - 1.5}, wall)) {
-                            doesItCollide = true } 
-                    })
-                    if (doesItCollide === false) {
-                        character.y -= 1.5;
-                        document.querySelector(".character").style.top = character.y + "%"; }
-                    
-                    willExitMaze(character)
-                }
+                else goUp(character, walls) // DOWN --> UP
             }
         }
     }
 }
 
+// GO RIGHT
+function goRight (character, walls) {
+    let doesItCollide = false; 
+    walls.forEach(wall => {
+        if(willEncounterWall({...character, x: character.x + 1.5}, wall)) 
+        { doesItCollide = true; }
+    })
+    if (doesItCollide === false) 
+    { character.x += 1.5;
+    document.querySelector(".character").style.left = character.x + "%"; }  
 
+    willExitMaze(character)
 
+    document.querySelector(".character").style.backgroundImage = "url(../img/dino-right.png)"
+}
+
+// GO LEFT
+function goLeft (character, walls) {
+    let doesItCollide = false; 
+    walls.forEach(wall => {
+        if(willEncounterWall({...character,x: character.x - 1.5}, wall)) {
+            doesItCollide = true; }
+    })
+    if (doesItCollide === false) {
+        character.x -= 1.5;
+        document.querySelector(".character").style.left = character.x + "%"; };
+    
+    willExitMaze(character);
+
+    document.querySelector(".character").style.backgroundImage = "url(../img/dino-left.png)"
+}
+
+// GO UP
+function goUp (character, walls) {
+    let doesItCollide = false; //UP
+    walls.forEach(wall => {
+        if(willEncounterWall({...character,y: character.y - 1.5}, wall)) {
+            doesItCollide = true } 
+    })
+    if (doesItCollide === false) {
+        character.y -= 1.5;
+        document.querySelector(".character").style.top = character.y + "%"; }
+
+        willExitMaze(character)
+}
+
+function goDown (character, walls) {
+    let doesItCollide = false; // DOWN
+    walls.forEach(wall => {
+        if(willEncounterWall({...character,y: character.y + 1.5}, wall)) {
+            doesItCollide = true }      
+    })
+    if(doesItCollide === false) {
+        character.y += 1.5;
+        document.querySelector(".character").style.top = character.y + "%"; }
+
+    willExitMaze(character)
+
+}
 
 function willEncounterWall (character, wall) {
     if((character.x + character.w) > wall.x && character.x < (wall.x + wall.w) && (character.y + character.h) > wall.y && character.y < (wall.y + wall.h)) {
@@ -422,56 +411,16 @@ function resetTimer() {
     timer.textContent = counter;
 }
 
-// LEVEL MEDIUM 
-
-if(btnEasy.classList.contains("selected")) {
-}
-
-
-
-
-
 
 function randRange(data) {
     const newTime = data[Math.floor(data.length * Math.random())];
     return newTime
 }
 
-const areaRotate = document.querySelector(".rotate");
+const timeArray = new Array(8000, 9000, 10000);
 
 
 function toggleRotation() {
     let newDegree = Math.floor(Math.random() * 180)
-    const timeArray = new Array(8000, 9000, 10000);
     areaRotate.style.transform = `rotate(${newDegree}deg)`
-    clearInterval(timerRotate);
-    timerRotate = setInterval(toggleRotation, randRange(timeArray));
 }
-
-let timerRotate = setInterval(toggleRotation, 1000);
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
