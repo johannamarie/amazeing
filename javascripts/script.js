@@ -1,3 +1,5 @@
+const body = document.querySelector("body")
+
 // BUTTONS
 const btnStop = document.getElementById("btn-stop")
 const btnBeg = document.getElementById("level-beg");
@@ -171,8 +173,6 @@ btnNewGameWin.onclick = newGame
 function startGame(counterBegin) { // START THE GAME
     //MAKE DISAPPEAR
     startSettings.classList.add("hidden");
-    
-    // MAKE BTN STOP
     btnStop.classList.remove("hidden");
 
     // SET GAME
@@ -196,6 +196,18 @@ let timerRotate = () => setTimeout(() => {
 
 function clearTimerRotate() {
     clearTimeout(timerRotate);
+}
+
+function randRange(data) {
+    const newTime = data[Math.floor(data.length * Math.random())];
+    return newTime
+}
+
+const timeArray = new Array(2000, 9000, 10000);
+
+function toggleRotation() {
+    let newDegree = Math.floor(Math.random() * 180)
+    areaRotate.style.transform = `rotate(${newDegree}deg)`
 }
 
 function stopGame() {
@@ -255,11 +267,10 @@ function newGame() {
     timerText.classList.add("hidden")
 
     // RESET LEVEL
-    if(btnBeg.classList.contains("selected")) {btnBeg.classList.remove("selected"); document.queryDocument("body").style.backgroundImage = rgba(204,171,216,255)
-}
-    if(btnInt.classList.contains("selected")) {btnInt.classList.remove("selected");}
-    if(btnAdv.classList.contains("selected")) {btnAdv.classList.remove("selected");}
-    if(btnMast.classList.contains("selected")) {btnMast.classList.remove("selected");}
+    if(btnBeg.classList.contains("selected")) btnBeg.classList.remove("selected"); 
+    if(btnInt.classList.contains("selected")) btnInt.classList.remove("selected");
+    if(btnAdv.classList.contains("selected")) btnAdv.classList.remove("selected");
+    if(btnMast.classList.contains("selected")) btnMast.classList.remove("selected");
     
     // GAME
     destroyCharacter()
@@ -431,15 +442,5 @@ function resetTimer() {
 }
 
 
-function randRange(data) {
-    const newTime = data[Math.floor(data.length * Math.random())];
-    return newTime
-}
-
-const timeArray = new Array(2000, 9000, 10000);
 
 
-function toggleRotation() {
-    let newDegree = Math.floor(Math.random() * 180)
-    areaRotate.style.transform = `rotate(${newDegree}deg)`
-}
