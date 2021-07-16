@@ -164,7 +164,7 @@ h2, h1 {
 
 
 .rotate {
-    
+    transition: transform 1s linear;
 }
 
 

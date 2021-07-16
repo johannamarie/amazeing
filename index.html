@@ -9,12 +9,6 @@
 </head>
 <body>
 
-    <!-- <div class="name-user">
-        <p>And who are you stranger ?</p>
-        <input id="input-name" placeholder="NAME">
-        <button id="submit-name" class="button">A-MAZE ME</button>
-    </div> -->
-
     <div class="timer-text hidden">
     <p>You've got <span id="timer">60</span> seconds left.</p>
     </div>
@@ -32,16 +26,22 @@
     <div class="start-settings">
 
         <div id="rules-section" class="">
-            <h1>LIFE IS A MAZE</h1>
-            <p>it's a maze. i think it's pretty self-explanatory.</p>
+            <h1>IT'S A MAZE.</h1>
+            <p>with a twist.</p>
+            <ul>
+                <li><span>beginner</span>: normal maze</li>
+                <li><span>intermediate</span>: UP is DOWN, LEFT is RIGHT.</li>
+                <li><span>advanced</span>: UP is RIGHT, RIGHT is LEFT, LEFT is DOWN, DOWN is UP.</li>
+                <li><span>mazter</span>: same as advanced but with a few surprises.</li>
+            </ul>
             <p>choose a level to start.</p>
         </div>
 
         <div class="levels">
-            <button id='level-easy' class="level button">BEGINNER</button>
-            <button id="level-medium" class="level button">INTERMEDIATE</button>
-            <button id="level-hard" class="level button">ADVANCED</button>
-            <button id="level-hard" class="level button">EXPERT</button>
+            <button id='level-beg' class="level button">BEGINNER</button>
+            <button id="level-int" class="level button">INTERMEDIATE</button>
+            <button id="level-adv" class="level button">ADVANCED</button>
+            <button id="level-mast" class="level button">MAZTER</button>
         </div>
 
     </div>
